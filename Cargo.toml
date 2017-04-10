@@ -1,0 +1,10 @@
+[package]
+name = "krb5-sys"
+version = "0.1.0"
+authors = ["skeleten <skele@ymail.com>"]
+
+[features]
+default = []
+krb5_old_crypto = []
+
+[dependencies]
