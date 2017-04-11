@@ -2006,7 +2006,7 @@ extern "C" {
     pub fn krb5_sname_to_principal(context: krb5_context,
                                    hostname: *const c_char,
                                    sname: *const c_char,
-                                   type: krb5_int32,
+                                   type_: krb5_int32,
                                    ret_princ: *mut krb5_principal) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_sname_match(context: krb5_context,
