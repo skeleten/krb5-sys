@@ -3,6 +3,9 @@
 use std::os::raw::*;
 
 // krb5/krb5.h:136
+
+pub enum _profile_t {}
+
 pub type krb5_octet = u8;
 pub type krb5_int16 = i16;
 pub type krb5_ui_2 = u16;
@@ -48,6 +51,13 @@ pub struct krb5_data {
     magic: krb5_magic,
     length: c_uint,
     data: *mut c_char,
+}
+
+#[repr(C)]
+pub struct krb5_octet_data {
+    magic: krb5_magic,
+    length: c_uint,
+    data: *mut krb5_octet,
 }
 
 pub const SALT_TYPE_AFS_LENGTH: c_uint = 65535;
@@ -1482,5 +1492,579 @@ extern "C" {
                              vno: krb5_kvno,
                              enctype: krb5_enctype,
                              entry: *mut krb5_keytab_entry) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_start_seq_get(context: krb5_context,
+                                 keytab: krb5_keytab,
+                                 cursor: *mut krb5_kt_cursor) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_next_entry(context: krb5_context,
+                              keytab: krb5_keytab,
+                              entry: *mut krb5_keytab_entry,
+                              cursor: *mut krb5_kt_cursor) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_end_seq_get(context: krb5_context,
+                               keytab: krb5_keytab,
+                               cursor: *mut krb5_kt_cursor) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_have_content(context: krb5_context,
+                                keytab: krb5_keytab) -> krb5_error_code;
+}
 
+/// Use secure context configuration
+pub const KRB5_INIT_CONTEXT_SECURE: krb5_flags = 0x1;
+/// Use KDC configuration if available
+pub const KRB5_INIT_CONTEXT_KDC: krb5_flags = 0x2;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_init_context(context: *mut krb5_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_secure_context(context: *mut krb5_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_context_profile(profile: *mut _profile_t,
+                                     flags: krb5_flags,
+                                     context: krb5_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_free_context(context: krb5_context);
+    // TODO: Doc
+    pub fn krb5_copy_context(ctx: krb5_context,
+                             nctx_out: krb5_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_set_default_tgs_enctypes(context: krb5_context,
+                                         etypes: *const krb5_enctype) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_permitted_enctypes(context: krb5_context,
+                                       ktypes: *mut *mut krb5_enctype) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_is_thread_safe() -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_server_decrypt_ticket_keytab(context: krb5_context,
+                                             kt: krb5_keytab,
+                                             ticket: *mut krb5_ticket) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_free_tgt_creds(context: krb5_context,
+                               rgts: *mut *mut krb5_creds);
+
+}
+
+/// Want user-user ticket
+pub const KRB5_GC_USER_USER: krb5_flags = 1;
+/// Want cached ticket only
+pub const KRB5_GC_CACHED: krb5_flags = 2;
+/// Set canonicalize KDC option
+pub const KRB5_GC_CANONICALIZE: krb5_flags = 4;
+/// Do not store in credential cache
+pub const KRB5_GC_NO_STORE: krb5_flags = 8;
+/// Acquire forwardable tickets
+pub const KRB5_GC_FORWARDABLE: krb5_flags = 16;
+/// Disable transited check
+pub const KRB5_GC_NO_TRANSIT_CHECK: krb5_flags = 32;
+/// Constrained delegation
+pub const KRB5_GC_CONSTRAINED_DELEGATION: krb5_flags = 64;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_get_credentials(context: krb5_context,
+                                options: krb5_flags,
+                                ccache: krb5_ccache,
+                                in_creds: *mut krb5_creds,
+                                out_creds: *mut *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_credentials_validate(context: krb5_context,
+                                         options: krb5_flags,
+                                         ccache: krb5_ccache,
+                                         in_creds: *mut krb5_creds,
+                                         out_creds: *mut *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_credentials_renew(context: krb5_context,
+                                      options: krb5_flags,
+                                      ccache: krb5_ccache,
+                                      in_creds: *mut krb5_creds,
+                                      out_creds: *mut *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_mk_req(context: krb5_context,
+                       auth_context: *mut krb5_auth_context,
+                       ap_req_options: krb5_flags,
+                       service: *mut c_char,
+                       hostname: *mut c_char,
+                       in_data: *mut krb5_data,
+                       ccache: krb5_ccache,
+                       outbuf: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_mk_req_extended(context: krb5_context,
+                                auth_context: *mut krb5_auth_context,
+                                ap_req_options: krb5_flags,
+                                in_data: *mut krb5_data,
+                                in_creds: *mut krb5_creds,
+                                outbuf: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_mk_rep(context: krb5_context,
+                       auth_context: krb5_auth_context,
+                       outbuf: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_mk_rep_dce(context: krb5_context,
+                           auth_context: krb5_auth_context,
+                           outbuf: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_rd_rep(context: krb5_context,
+                       auth_context: krb5_auth_context,
+                       inbuf: *const krb5_data,
+                       repl: *mut *mut krb5_ap_rep_enc_part) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_rd_rep_dce(context: krb5_context,
+                           auth_context: krb5_auth_context,
+                           inbuf: *const krb5_data,
+                           nonce: *mut krb5_ui_4) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_mk_error(context: krb5_context,
+                         dec_err: *const krb5_error,
+                         enc_err: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_rd_error(context: krb5_context,
+                         enc_errbuf: *const krb5_data,
+                         dec_error: *mut *mut krb5_error) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_rd_safe(context: krb5_context,
+                        auth_context: krb5_auth_context,
+                        inbuf: *const krb5_data,
+                        outbuf: *mut krb5_data,
+                        outdata: *mut krb5_replay_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_rd_priv(context: krb5_context,
+                        auth_context: krb5_auth_context,
+                        inbuf: *const krb5_data,
+                        outbuf: *mut krb5_data,
+                        outdata: *mut krb5_replay_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_parse_name(context: krb5_context,
+                           name: *const c_char,
+                           principal_out: *mut krb5_principal) -> krb5_error_code;
+}
+
+/// Error if realm is present
+pub const KRB5_PRINCIPAL_PARSE_NO_REALM: krb5_flags = 0x1;
+/// Error if realm is not present
+pub const KRB5_PRINCIPAL_PARSE_REQUIRE_REALM: krb5_flags = 0x2;
+/// Create singe-component enterprise principle
+pub const KRB5_PRINCIPAL_PARSE_ENTERPRSIE: krb5_flags = 0x4;
+/// Ignore realm if present
+pub const KRB5_PRINCIPAL_PARSE_IGNORE_REALM: krb5_flags = 0x8;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_parse_name_flags(context: krb5_context,
+                                 name: *const c_char,
+                                 flags: krb5_flags,
+                                 principal_out: *mut krb5_principal) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_unparse_name(context: krb5_context,
+                             principal: krb5_const_principal,
+                             name: *mut *mut c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_unparse_name_ext(context: krb5_context,
+                                 principal: krb5_const_principal,
+                                 name: *mut *mut c_char,
+                                 size: *mut c_uint) -> krb5_error_code;
+}
+
+/// Omit realm if it is the local realm
+pub const KRB5_PRINCIPAL_UNPARSE_SHORT: krb5_flags = 0x1;
+/// Omit realm always
+pub const KRB5_PRINCIPAL_UNPARSE_NO_REALM: krb5_flags = 0x2;
+/// Don't escape special characters
+pub const KRB5_PRINCIPAL_UNPARSE_DISPLAY: krb5_flags = 0x4;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_unparse_name_flags(context: krb5_context,
+                                   principal: krb5_const_principal,
+                                   flags: krb5_flags,
+                                   name: *mut *mut c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_unparse_name_flags_ext(context: krb5_context,
+                                       principal: krb5_const_principal,
+                                       flags: krb5_flags,
+                                       name: *mut *mut c_char,
+                                       size: c_uint) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_set_principal_realm(context: krb5_context,
+                                    principal: krb5_principal,
+                                    realm: *const c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_address_search(context: krb5_context,
+                               addr: *const krb5_address,
+                               addrlist: *mut krb5_address) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_address_compare(context: krb5_context,
+                                addr1: *const krb5_address,
+                                addr2: *const krb5_address) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_address_order(context: krb5_context,
+                              addr1: *const krb5_address,
+                              addr2: *const krb5_address) -> c_int;
+    // TODO: Doc
+    pub fn krb5_realm_compare(context: krb5_context,
+                              princ1: krb5_const_principal,
+                              princ2: krb5_const_principal) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_principal_compare(context: krb5_context,
+                                  princ1: krb5_const_principal,
+                                  princ2: krb5_const_principal) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_principal_compare_any_realm(context: krb5_context,
+                                            princ1: krb5_const_principal,
+                                            princ2: krb5_const_principal) -> krb5_boolean;
+}
+
+// TODO: Doc
+pub const KRB5_PRINCIPAL_COMPARE_INGORE_REALM: krb5_flags = 1;
+// TODO: Doc
+pub const KRB5_PRINCIPAL_COMPARE_ENTERPRSIE: krb5_flags = 2;
+// TODO: Doc
+pub const KRB5_PRINCIPAL_COMPARE_CASEFOLD: krb5_flags = 4;
+// TODO: Doc
+pub const KRB5_PRINCIPAL_COMPARE_UTF8: krb5_flags = 8;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_principal_compare_flags(context: krb5_context,
+                                        princ1: krb5_const_principal,
+                                        princ2: krb5_const_principal,
+                                        flags: krb5_flags) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_init_keyblock(context: krb5_context,
+                              enctype: krb5_enctype,
+                              length: usize,
+                              out: *mut *mut krb5_keyblock) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_keyblock(context: krb5_context,
+                              from: *const krb5_keyblock,
+                              to: *mut *mut krb5_keyblock) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_keyblock_contents(context: krb5_context,
+                                       from: *const krb5_keyblock,
+                                       to: *mut krb5_keyblock) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_creds(context: krb5_context,
+                           incred: *const krb5_creds,
+                           outcred: *mut *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_data(context: krb5_context,
+                          indata: *const krb5_data,
+                          outdata: *mut *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_principal(context: krb5_context,
+                               inprinc: krb5_const_principal,
+                               outprinc: *mut krb5_principal) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_addresses(context: krb5_context,
+                               inaddr: *mut *const krb5_address,
+                               outaddr: *mut *mut krb5_address) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_ticket(context: krb5_context,
+                            from: *const krb5_ticket,
+                            pto: *mut *mut krb5_ticket) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_authdata(context: krb5_context,
+                              in_authdat: *mut *const krb5_authdata,
+                              out: *mut *mut krb5_authdata) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_find_authdata(context: krb5_context,
+                              ticket_authdata: *mut *const krb5_authdata,
+                              ap_req_authdata: *mut *const krb5_authdata,
+                              ad_type: krb5_authdatatype,
+                              results: *mut *mut *mut krb5_authdata) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_merge_authdata(context: krb5_context,
+                               inauthdat1: *mut *const krb5_authdata,
+                               inauthdat2: *mut *const krb5_authdata,
+                               outauthdat: *mut *mut *mut krb5_authdata) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_authenticator(context: krb5_context,
+                                   authfrom: *const krb5_authenticator,
+                                   authto: *mut *mut krb5_authenticator) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_copy_checksum(context: krb5_context,
+                              ckfrom: *const krb5_checksum,
+                              ckto: *mut *mut krb5_checksum) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_server_rcache(context: krb5_context,
+                                  piece: *const krb5_data,
+                                  rcptr: *mut krb5_rcache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_build_principal_ext(context: krb5_context,
+                                    princ: *mut krb5_principal,
+                                    rlen: c_uint,
+                                    realm: *const c_char, ...) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_build_principal(context: krb5_context,
+                                princ: *mut krb5_principal,
+                                rlen: c_uint,
+                                real: *const c_char, ...) -> krb5_error_code;
+
+    // #[cfg(feature = "krb5_deprecated")]
+    // TODO: Doc
+    // TODO:  krb5_build_principal_va
+
+    // TODO: Doc
+    // TODO: pub fn krb5_build_principal_alloc_va
+
+    // TODO: Doc
+    pub fn krb5_425_conv_principal(context: krb5_context,
+                                   name: *const c_char,
+                                   instance: *const c_char,
+                                   realm: *const c_char,
+                                   princ: *mut krb5_principal) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_524_conv_principal(context: krb5_context,
+                                   princ: krb5_const_principal,
+                                   name: *mut c_char,
+                                   inst: *mut c_char,
+                                   realm: *mut c_char) -> krb5_error_code;
+}
+
+#[deprecated]
+pub enum credentials {}
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_524_convert_creds(context: krb5_context,
+                                  v5creds: *mut krb5_creds,
+                                  v4creds: *mut credentials) -> c_int;
+
+    // TODO: krb524_init_ets
+
+    // TODO: Doc
+    pub fn krb5_kt_resolve(context: krb5_context,
+                           name: *const c_char,
+                           ktid: *mut krb5_keytab) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_dup(context: krb5_context,
+                       in_: krb5_keytab,
+                       out: *mut krb5_keytab) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_default_name(context: krb5_context,
+                                name: *mut c_char,
+                                name_size: c_int) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_default(context: krb5_context,
+                           id: *mut krb5_keytab) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_client_default(context: krb5_context,
+                                  keytab_out: *mut krb5_keytab) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_free_keytab_entry_contents(context: krb5_context,
+                                           entry: *mut krb5_keytab_entry) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_free_entry(context: krb5_context,
+                              entry: *mut krb5_keytab_entry) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_remove_entry(context: krb5_context,
+                                id: krb5_keytab,
+                                entry: *mut krb5_keytab_entry) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_add_entry(context: krb5_context,
+                             id: krb5_keytab,
+                             entry: *mut krb5_keytab_entry) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_principal2salt(context: krb5_context,
+                               pr: krb5_const_principal,
+                               ret: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_resolve(context: krb5_context,
+                           name: *const c_char,
+                           cache: *mut krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_dup(context: krb5_context,
+                       in_: krb5_ccache,
+                       out: *mut krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_default_name(context: krb5_context) -> *const c_char;
+    // TODO: Doc
+    pub fn krb5_cc_set_default_name(context: krb5_context,
+                                    name: *const c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_default(context: krb5_context,
+                           ccache: *mut krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_copy_creds(context: krb5_context,
+                              incc: krb5_ccache,
+                              outcc: krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_get_config(context: krb5_context,
+                              id: krb5_ccache,
+                              principal: krb5_const_principal,
+                              key: *const c_char,
+                              data: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_set_config(context: krb5_context,
+                              id: krb5_ccache,
+                              principal: krb5_const_principal,
+                              key: *const c_char,
+                              data: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_is_config_principal(context: krb5_context,
+                                    principal: krb5_const_principal) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_cc_switch(context: krb5_context,
+                          cache: krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_support_switch(context: krb5_context,
+                                  type_: *const c_char) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_cc_cache_match(context: krb5_context,
+                               client: krb5_principal,
+                               cache_out: *mut krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_select(context: krb5_context,
+                          server: krb5_principal,
+                          cache_out: *mut krb5_ccache,
+                          princ_out: *mut krb5_principal) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_free_principal(context: krb5_context,
+                               val: krb5_principal);
+    // TODO: Doc
+    pub fn krb5_free_authenticator(context: krb5_context,
+                                   val: *mut krb5_authenticator);
+    // TODO: Doc
+    pub fn krb5_free_addresses(context: krb5_context,
+                               val: *mut *mut krb5_address);
+    // TODO: Doc
+    pub fn krb5_free_authdata(context: krb5_context,
+                              val: *mut *mut krb5_authdata);
+    // TODO: Doc
+    pub fn krb5_free_ticket(context: krb5_context,
+                            val: *mut krb5_ticket);
+    // TODO: Doc
+    pub fn krb5_free_error(context: krb5_context,
+                           val: *mut krb5_error);
+    // TODO: Doc
+    pub fn krb5_free_creds(context: krb5_context,
+                           val: *mut krb5_creds);
+    // TODO: Doc
+    pub fn krb5_free_cred_contents(context: krb5_context,
+                                   val: *mut krb5_creds);
+    // TODO: Doc
+    pub fn krb5_free_checksum(context: krb5_context,
+                              val: *mut krb5_checksum);
+    // TODO: Doc
+    pub fn krb5_free_checksum_contents(context: krb5_context,
+                                       val: *mut krb5_checksum);
+    // TODO: Doc
+    pub fn krb5_free_keyblock(context: krb5_context,
+                              val: *mut krb5_keyblock);
+    // TODO: Doc
+    pub fn krb5_free_keyblock_contents(context: krb5_context,
+                                       val: *mut krb5_keyblock);
+    // TODO: Doc
+    pub fn krb5_free_ap_rep_enc_part(context: krb5_context,
+                                     val: *mut krb5_ap_rep_enc_part);
+    // TODO: Doc
+    pub fn krb5_free_data(context: krb5_context,
+                          val: *mut krb5_data);
+    // TODO: Doc
+    pub fn krb5_free_octet_data(context: krb5_context,
+                                val: *mut krb5_octet_data);
+    // TODO: Doc
+    pub fn krb5_free_data_contents(context: krb5_context,
+                                   val: *mut krb5_data);
+    // TODO: Doc
+    pub fn krb5_free_unparsed_name(context: krb5_context,
+                                   val: *mut c_char);
+    // TODO: Doc
+    pub fn krb5_free_string(context: krb5_context,
+                            val: *mut c_char);
+    // TODO: Doc
+    pub fn krb5_free_enctypes(context: krb5_context,
+                              val: *mut krb5_enctype);
+    // TODO: Doc
+    pub fn krb5_free_cksumtypes(context: krb5_context,
+                                val: *mut krb5_cksumtype);
+    // TODO: Doc
+    pub fn krb5_us_timeofday(context: krb5_context,
+                             seconds: *mut krb5_timestamp,
+                             microseconds: *mut krb5_int32) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_timeofday(context: krb5_context,
+                          timeret: *mut krb5_timestamp) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_check_clockskew(context: krb5_context,
+                                date: krb5_timestamp) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_os_localaddr(context: krb5_context,
+                             addr: *mut *mut *mut krb5_address) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_default_realm(context: krb5_context,
+                                  lrealm: *mut *mut c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_set_default_realm(context: krb5_context,
+                                  lrealm: *const c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_free_default_realm(context: krb5_context,
+                                   lrealm: *mut c_char);
+    // TODO: Doc
+    pub fn krb5_sname_to_principal(context: krb5_context,
+                                   hostname: *const c_char,
+                                   sname: *const c_char,
+                                   type: krb5_int32,
+                                   ret_princ: *mut krb5_principal) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_sname_match(context: krb5_context,
+                            matching: krb5_const_principal,
+                            princ: krb5_const_principal) -> krb5_boolean;
+    // TODO: Doc
+    pub fn krb5_change_password(context: krb5_context,
+                                creds: *mut krb5_creds,
+                                newpw: *mut c_char,
+                                result_code: *mut c_int,
+                                result_code_string: *mut krb5_data,
+                                result_string: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_set_password(context: krb5_context,
+                             creds: *mut krb5_creds,
+                             newpw: *mut c_char,
+                             change_password_for: krb5_principal,
+                             result_code: *mut c_int,
+                             result_code_string: *mut krb5_data,
+                             result_string: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_set_password_useing_ccache(context: krb5_context,
+                                           ccache: krb5_ccache,
+                                           newpw: *mut c_char,
+                                           change_password_for: krb5_principal,
+                                           result_code: *mut c_int,
+                                           result_code_string: *mut krb5_data,
+                                           result_string: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_chpw_message(context: krb5_context,
+                             server_string: *const krb5_data,
+                             message_out: *mut *mut c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_profile(context: krb5_context,
+                            profile: *mut *mut _profile_t) -> krb5_error_code;
+
+    #[cfg(feature = "krb5_deprecated")]
+    #[deprectated]
+    pub fn krb5_get_in_tkt_with_password(context: krb5_context,
+                                         options: krb5_flags,
+                                         addrs: *mut *const krb5_address,
+                                         ktypes: *mut krb5_enctype,
+                                         pre_auth_types: *mut krb5_preauthtype,
+                                         password: *const c_char,
+                                         ccache: krb5_ccache,
+                                         creds: *mut krb5_creds,
+                                         ret_as_reply: *mut *mut krb5_kdc_rep) -> krb5_error_code;
+
+    #[cfg(feature = "krb5_deprecated")]
+    #[deprectated]
+    pub fn krb5_get_in_tkt_with_skey(context: krb5_context,
+                                     options: krb5_flags,
+                                     addrs: *mut *const krb5_address,
+                                     ktypes: *mut krb5_enctype,
+                                     pre_auth_types: *mut krb5_preauthtype,
+                                     password: *const c_char,
+                                     ccache: krb5_ccache,
+                                     creds: *mut krb5_creds,
+                                     ret_as_reply: *mut *mut krb5_kdc_rep) -> krb5_error_code;
+    // krb5/krb5.h:5133
 }
