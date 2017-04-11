@@ -1828,6 +1828,7 @@ pub enum credentials {}
 
 extern "C" {
     // TODO: Doc
+    #[allow(deprecated)]
     pub fn krb5_524_convert_creds(context: krb5_context,
                                   v5creds: *mut krb5_creds,
                                   v4creds: *mut credentials) -> c_int;
