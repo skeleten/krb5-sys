@@ -1,4 +1,4 @@
-#![allow(non_camel_case_types)]
+#![allow(non_camel_case_types, overflowing_literals)]
 
 use std::os::raw::*;
 
@@ -109,7 +109,7 @@ pub type krb5_const_principal = *const krb5_principal_data;
 pub const KRB5_REFERRAL_REALM: &'static str = "";
 
 // krb5/krb5.h:267
-extern {
+extern "C" {
     /// Check for a match with KRB5_REFERRAL_REALM
     ///
     /// `r`: Realm to check
@@ -309,7 +309,7 @@ pub const KRB5_C_RANDSOURCE_MAX: u32 = 5;
 //       krb5_x
 //       krb5_xc
 
-extern {
+extern "C" {
     /// Encrypt data using a key (operates on keyblock).
     ///
     /// `context`: Library context
@@ -516,7 +516,7 @@ pub const KRB5_KEYUSAGE_ENC_CHALLENGE_CLIENT: krb5_keyusage = 54;
 pub const KRB5_KEYUSAGE_ENC_CHALLENGE_KDC: krb5_keyusage = 55;
 pub const KRB5_KEYUSAGE_AS_REQ: krb5_keyusage = 56;
 
-extern {
+extern "C" {
     // TODO: Doc
     pub fn krb5_c_valid_enctype(ktype: krb5_enctype) -> krb5_boolean;
     // TODO: Doc
@@ -545,7 +545,7 @@ pub const KRB5_CRYPTO_TYPE_CHECKSUM: krb5_cryptotype = 6;
 /// header, data and trailer buffers
 pub const KRB5_CRYPTO_TYPE_STREAM: krb5_cryptotype = 7;
 
-extern {
+extern "C" {
     // TODO: Doc
     pub fn krb5_c_make_checksum_iov(context: krb5_context,
                                     cksumtype: krb5_cksumtype,
@@ -766,40 +766,40 @@ extern {
     // endif KRB5_OLD_CRYPTO
 }
 
-pub const KDC_OPT_FORWARDABLE: u32             = 0x40000000;
-pub const KDC_OPT_FORWARDED: u32               = 0x20000000;
-pub const KDC_OPT_PROXIABLE: u32               = 0x10000000;
-pub const KDC_OPT_PROXY: u32                   = 0x08000000;
-pub const KDC_OPT_ALLOW_POSTDATED: u32         = 0x04000000;
-pub const KDC_OPT_POSTDATED: u32               = 0x02000000;
+pub const KDC_OPT_FORWARDABLE: krb5_flags             = 0x40000000;
+pub const KDC_OPT_FORWARDED: krb5_flags               = 0x20000000;
+pub const KDC_OPT_PROXIABLE: krb5_flags               = 0x10000000;
+pub const KDC_OPT_PROXY: krb5_flags                   = 0x08000000;
+pub const KDC_OPT_ALLOW_POSTDATED: krb5_flags         = 0x04000000;
+pub const KDC_OPT_POSTDATED: krb5_flags               = 0x02000000;
 
-pub const KDC_OPT_RENEWABLE: u32               = 0x00800000;
+pub const KDC_OPT_RENEWABLE: krb5_flags               = 0x00800000;
 
-pub const KDC_OPT_CNAME_IN_ADDL_TKT: u32       = 0x00020000;
-pub const KDC_OPT_CANONICALIZE: u32            = 0x00010000;
-pub const KDC_OPT_REQUEST_ANONYMOUS: u32       = 0x00008000;
+pub const KDC_OPT_CNAME_IN_ADDL_TKT: krb5_flags       = 0x00020000;
+pub const KDC_OPT_CANONICALIZE: krb5_flags            = 0x00010000;
+pub const KDC_OPT_REQUEST_ANONYMOUS: krb5_flags       = 0x00008000;
 
-pub const KDC_OPT_DISABLE_TRANSITED_CHEDK: u32 = 0x00000020;
-pub const KDC_OPT_RENEWABLE_OK: u32            = 0x00000010;
-pub const KDC_OPT_ENC_TKT_IN_SKEY: u32         = 0x00000008;
+pub const KDC_OPT_DISABLE_TRANSITED_CHEDK: krb5_flags = 0x00000020;
+pub const KDC_OPT_RENEWABLE_OK: krb5_flags            = 0x00000010;
+pub const KDC_OPT_ENC_TKT_IN_SKEY: krb5_flags         = 0x00000008;
 
-pub const KDC_OPT_RENEW: u32                   = 0x00000002;
-pub const KDC_OPT_VALIDATE: u32                = 0x00000001;
+pub const KDC_OPT_RENEW: krb5_flags                   = 0x00000002;
+pub const KDC_OPT_VALIDATE: krb5_flags                = 0x00000001;
 
-pub const KDC_TKT_COMMON_MASK: u32             = 0x54800000;
+pub const KDC_TKT_COMMON_MASK: krb5_flags             = 0x54800000;
 
-pub const AP_OPTS_RESERVERD: u32               = 0x80000000;
+pub const AP_OPTS_RESERVERD: krb5_flags               = 0x80000000;
 /// Use session key
-pub const AP_OPTS_USE_SESSION_KEY: u32         = 0x40000000;
+pub const AP_OPTS_USE_SESSION_KEY: krb5_flags         = 0x40000000;
 /// Perform a mutual authentiction exchange
-pub const AP_OPTS_MUTUAL_REQUIRED: u32         = 0x20000000;
+pub const AP_OPTS_MUTUAL_REQUIRED: krb5_flags         = 0x20000000;
 
-pub const AP_OPTS_ETYPE_NEGOTIATION: u32       = 0x00000002;
+pub const AP_OPTS_ETYPE_NEGOTIATION: krb5_flags       = 0x00000002;
 /// Generate a subsession key from the curretn session key obtained from
 /// the credentials
-pub const AP_OPTS_USE_SUBKEY: u32              = 0x00000001;
+pub const AP_OPTS_USE_SUBKEY: krb5_flags              = 0x00000001;
 
-pub const AP_OPTS_WIRE_MASK: u32               = 0xfffffff0;
+pub const AP_OPTS_WIRE_MASK: krb5_flags               = 0xfffffff0;
 
 pub const AD_TYPE_RESERVED: u16                = 0x8000;
 pub const AD_TYPE_EXTERNAL: u16                = 0x4000;
@@ -807,21 +807,21 @@ pub const AD_TYPE_REGISTERED: u16              = 0x2000;
 
 pub const AD_TYPE_FIELD_TYPE_MASK: u16         = 0x1fff;
 
-pub const TKT_FLG_FORWARDABLE: u32             = 0x40000000;
-pub const TKT_FLG_FORWARDED: u32               = 0x20000000;
-pub const TKT_FLG_PROXIABLE: u32               = 0x10000000;
-pub const TKT_FLG_PROXY: u32                   = 0x08000000;
-pub const TKT_FLG_MAY_POSTDATE: u32            = 0x04000000;
-pub const TKT_FLG_POSTDATED: u32               = 0x02000000;
-pub const TKT_FLG_INVALID: u32                 = 0x01000000;
-pub const TKT_FLG_RENEWABLE: u32               = 0x00800000;
-pub const TKT_FLG_INITIAL: u32                 = 0x00400000;
-pub const TKT_FLG_PRE_AUTH: u32                = 0x00200000;
-pub const TKT_FLG_HW_AUTH: u32                 = 0x00100000;
-pub const TKT_FLG_TRANSIT_POLICY_CHECKED: u32  = 0x00080000;
-pub const TKT_FLG_OK_AS_DELEGATE: u32          = 0x00040000;
-pub const TKT_FLG_ENC_PA_REP: u32              = 0x00010000;
-pub const TKT_FLG_ANONYMOUS: u32               = 0x00008000;
+pub const TKT_FLG_FORWARDABLE: krb5_flags             = 0x40000000;
+pub const TKT_FLG_FORWARDED: krb5_flags               = 0x20000000;
+pub const TKT_FLG_PROXIABLE: krb5_flags               = 0x10000000;
+pub const TKT_FLG_PROXY: krb5_flags                   = 0x08000000;
+pub const TKT_FLG_MAY_POSTDATE: krb5_flags            = 0x04000000;
+pub const TKT_FLG_POSTDATED: krb5_flags               = 0x02000000;
+pub const TKT_FLG_INVALID: krb5_flags                 = 0x01000000;
+pub const TKT_FLG_RENEWABLE: krb5_flags               = 0x00800000;
+pub const TKT_FLG_INITIAL: krb5_flags                 = 0x00400000;
+pub const TKT_FLG_PRE_AUTH: krb5_flags                = 0x00200000;
+pub const TKT_FLG_HW_AUTH: krb5_flags                 = 0x00100000;
+pub const TKT_FLG_TRANSIT_POLICY_CHECKED: krb5_flags  = 0x00080000;
+pub const TKT_FLG_OK_AS_DELEGATE: krb5_flags          = 0x00040000;
+pub const TKT_FLG_ENC_PA_REP: krb5_flags              = 0x00010000;
+pub const TKT_FLG_ANONYMOUS: krb5_flags               = 0x00008000;
 
 pub const LR_TYPE_THIS_SERVER_ONLY: u16        = 0x8000;
 pub const LR_TYPE_INTERPRETATION_MASK: u16     = 0x7fff;
@@ -946,3 +946,541 @@ pub const KRB5_PADATA_OTP_PIN_CHANGE: isize = 144;
 pub const KRB5_PADATA_PKINIT_KX: isize = 147;
 /// RFC 6806
 pub const KRB5_ENCPADATA_REQ_ENC_PA_REP: isize = 149;
+
+pub const KRB5_SAM_USE_SAD_AS_KEY: isize = 0x80000000;
+pub const KRB5_SAM_SEND_ENCRYPTED_SAD: isize = 0x40000000;
+/// currently must be zero
+pub const KRB5_SAM_MUST_PK_ENCRYPT_SAD: isize = 0x20000000;
+
+/// Transited encoding types
+pub const KRB5_DOMAIN_X500_COMPRESS: isize = 1;
+/// alternate authentication types
+pub const KRB5_ALTAUTH_ATT_CHALLENGE_RESPONSE: isize = 64;
+
+pub const KBR5_AUTHDATA_IF_RELEVANT: krb5_authdatatype = 1;
+pub const KRB5_AUTHDATA_KDC_ISSUED: krb5_authdatatype = 4;
+pub const KRB5_AUTHDATA_AND_OR: krb5_authdatatype = 5;
+pub const KRB5_AUTHDATA_MANDATORY_FOR_KDC: krb5_authdatatype = 8;
+pub const KRB5_AUTHDATA_INITIAL_VERIFIED_CAS: krb5_authdatatype = 9;
+pub const KRB5_AUTHDATA_OSF_DC: krb5_authdatatype = 64;
+pub const KRB5_AUTHDATA_SESAME: krb5_authdatatype = 65;
+pub const KRB5_AUTHDATA_WIN2K_PAC: krb5_authdatatype = 128;
+/// RFC 4537
+pub const KRB5_AUTHDATA_ETYPE_NEGOTIATION: krb5_authdatatype = 129;
+/// formerly 142 in krb5 1.8
+pub const KRB5_AUTHDATA_SIGNTICKET: krb5_authdatatype = 512;
+pub const KRB5_AUTHDATA_FX_ARMOR: krb5_authdatatype = 71;
+
+// TODO: find the proper type for these
+/// Success
+pub const KRB5_KPASSWD_SUCCESS: isize = 0;
+/// Malformed request
+pub const KRB5_KPASSWD_MALFORMED: isize = 1;
+/// Server error
+pub const KRB5_KPASSWD_HARDERROR: isize = 2;
+/// Authentication error
+pub const KRB5_KPASSWD_AUTHERROR: isize = 3;
+/// Password change rejected
+pub const KRB5_KPASSWD_SOFTERROR: isize = 4;
+/// Not authorized
+pub const KRB5_KPASSWD_ACCESSDENIED: isize = 5;
+/// Unknown RPC version
+pub const KRB5_KPASSWD_BAD_VERSION: isize = 6;
+/// The presented credentials were not obtained using a password directly
+pub const KRB5_KPASSWD_INITIAL_FLAG_NEEDED: isize = 7;
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_ticket_times {
+    authtime: krb5_timestamp,
+    starttime: krb5_timestamp,
+    endtime: krb5_timestamp,
+    renew_till: krb5_timestamp,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_authdata {
+    magic: krb5_magic,
+    ad_type: krb5_authdatatype,
+    length: c_uint,
+    contents: *mut krb5_octet,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_transited {
+    magic: krb5_magic,
+    tr_type: krb5_octet,
+    tr_contents: krb5_data,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_enc_tkt_part {
+    magic: krb5_magic,
+    flags: krb5_flags,
+    session: *mut krb5_keyblock,
+    client: krb5_principal,
+    transited: krb5_transited,
+    times: krb5_ticket_times,
+    caddrs: *mut *mut krb5_address,
+    authorization_data: *mut *mut krb5_authdata,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_ticket {
+    magic: krb5_magic,
+    server: krb5_principal,
+    enc_part: krb5_enc_data,
+    enc_part2: *mut krb5_enc_tkt_part,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_authenticator {
+    magic: krb5_magic,
+    client: krb5_principal,
+    checksum: *mut krb5_checksum,
+    cusec: krb5_int32,
+    ctime: krb5_timestamp,
+    subkey: *mut krb5_keyblock,
+    seq_number: krb5_ui_4,
+    authorization_data: *mut *mut krb5_authdata,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_tkt_authent {
+    magic: krb5_magic,
+    ticket: *mut krb5_ticket,
+    authenticator: *mut krb5_authenticator,
+    ap_options: krb5_flags,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_creds {
+    magic: krb5_magic,
+    client: krb5_principal,
+    server: krb5_principal,
+    keyblock: krb5_keyblock,
+    times: krb5_ticket_times,
+    is_skey: krb5_boolean,
+    ticket_flags: krb5_flags,
+    addresses: *mut *mut krb5_address,
+    ticket: krb5_data,
+    second_ticket: krb5_data,
+    authdata: *mut *mut krb5_authdata,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_last_req_entry {
+    magic: krb5_magic,
+    lr_type: krb5_int32,
+    value: krb5_timestamp,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_pa_data {
+    magic: krb5_magic,
+    pa_type: krb5_preauthtype,
+    length: c_uint,
+    contents: *mut krb5_octet,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_typed_data {
+    magic: krb5_magic,
+    type_: krb5_int32,
+    length: c_uint,
+    data: *mut krb5_octet,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_kdc_req {
+    magic: krb5_magic,
+    msg_type: krb5_msgtype,
+    padata: *mut *mut krb5_pa_data,
+    kdc_options: krb5_flags,
+    client: krb5_principal,
+    server: krb5_principal,
+    from: krb5_timestamp,
+    till: krb5_timestamp,
+    rtime: krb5_timestamp,
+    nonce: krb5_int32,
+    nktypes: c_int,
+    ktype: *mut krb5_enctype,
+    addressses: *mut *mut krb5_address,
+    authorization_data: krb5_enc_data,
+    unenc_authdata: *mut *mut krb5_authdata,
+    second_ticket: *mut *mut krb5_ticket,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_enc_kdc_rep_part {
+    magic: krb5_magic,
+    msg_type: krb5_msgtype,
+    session: *mut krb5_keyblock,
+    last_req: *mut *mut krb5_last_req_entry,
+    nonce: krb5_int32,
+    key_exp: krb5_timestamp,
+    flags: krb5_flags,
+    times: krb5_ticket_times,
+    server: krb5_principal,
+    caddrs: *mut *mut krb5_address,
+    enc_padata: *mut *mut krb5_pa_data,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_kdc_rep {
+    magic: krb5_magic,
+    msg_type: krb5_msgtype,
+    padata: *mut *mut krb5_pa_data,
+    client: krb5_principal,
+    ticket: *mut krb5_ticket,
+    enc_part: krb5_enc_data,
+    enc_part2: *mut krb5_enc_kdc_rep_part,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_error {
+    magic: krb5_magic,
+    ctime: krb5_timestamp,
+    cusec: krb5_int32,
+    susec: krb5_int32,
+    stime: krb5_timestamp,
+    error: krb5_ui_4,
+    client: krb5_principal,
+    server: krb5_principal,
+    text: krb5_data,
+    e_data: krb5_data,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_ap_req {
+    magic: krb5_magic,
+    ap_options: krb5_flags,
+    ticket: *mut krb5_ticket,
+    authenticator: krb5_enc_data,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_ap_rep {
+    magic: krb5_magic,
+    enc_part: krb5_enc_data,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_ap_rep_enc_part {
+    magic: krb5_magic,
+    ctime: krb5_timestamp,
+    cusec: krb5_int32,
+    subkey: *mut krb5_keyblock,
+    seq_number: krb5_ui_4,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_response {
+    magic: krb5_magic,
+    message_type: krb5_octet,
+    response: krb5_data,
+    expected_nonce: krb5_int32,
+    request_time: krb5_timestamp,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_cred_info {
+    magic: krb5_magic,
+    session: *mut krb5_keyblock,
+    client: krb5_principal,
+    server: krb5_principal,
+    flags: krb5_flags,
+    times: krb5_ticket_times,
+    caddrs: *mut *mut krb5_address,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_cred_enc_part {
+    magic: krb5_magic,
+    nonce: krb5_int32,
+    timestamp: krb5_timestamp,
+    usec: krb5_int32,
+    s_address: *mut krb5_address,
+    r_address: *mut krb5_address,
+    ticket_info: *mut *mut krb5_cred_info,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_cred {
+    magic: krb5_magic,
+    tickets: *mut *mut krb5_ticket,
+    enc_part: krb5_enc_data,
+    enc_part2: *mut krb5_cred_enc_part,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct passwd_phrase_element {
+    magic: krb5_magic,
+    passwd: *mut krb5_data,
+    phrase: *mut krb5_data,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_pwd_data {
+    magic: krb5_magic,
+    sequence_count: c_int,
+    element: *mut *mut passwd_phrase_element,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_pa_svr_referral_data {
+    principal: krb5_principal,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_pa_server_referral_data {
+    referred_realm: *mut krb5_data,
+    true_principal_name: krb5_principal,
+    requested_principal_name: krb5_principal,
+    referral_valid_until: krb5_timestamp,
+    rep_cksum: krb5_checksum,
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_pa_pac_req {
+    include_pac: krb5_boolean,
+}
+
+// krb5/krb5.h:2151
+// TODO: Find the proper datatypes
+/// Prevent replays with timestamps and replay cache
+pub const KRB5_AUTH_CONTEXT_DO_TIME: krb5_flags      = 0x00000001;
+/// Save timestamps for application
+pub const KRB5_AUTH_CONTEXT_RET_TIME: krb5_flags     = 0x00000002;
+/// Prevent replays with sequence numbers
+pub const KRB5_AUTH_CONTEXT_DO_SEQUENCE: krb5_flags  = 0x00000004;
+/// Save sequence numbers for application
+pub const KRB5_AUTH_CONTEXT_RET_SEQUENCE: krb5_flags = 0x00000008;
+pub const KRB5_AUTH_CONTEXT_PERMIT_ALL: krb5_flags   = 0x00000010;
+pub const KRB5_AUTH_CONTEXT_USE_SUBKEY: krb5_flags   = 0x00000020;
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_replay_data {
+    timestamp: krb5_timestamp,
+    usec: krb5_int32,
+    seq: krb5_ui_4,
+}
+
+/// Generate the local network address
+pub const KRB5_AUTH_CONTEXT_GENERATE_LOCAL_ADDR: krb5_flags       = 0x00000001;
+/// Generate the remote network address
+pub const KRB5_AUTH_CONTEXT_GENERATE_REMOTE_ADDR: krb5_flags      = 0x00000002;
+/// Generate the local network address and the local port
+pub const KRB5_AUTH_CONTEXT_GENERATE_LOCAL_FULL_ADDR: krb5_flags  = 0x00000004;
+/// Generate the remote network address and the remote port
+pub const KRB5_AUTH_CONTEXT_GENERATE_REMOTE_FULL_ADDR: krb5_flags = 0x00000008;
+
+pub type krb5_mk_req_checksum_func = extern "C" fn(krb5_context, krb5_auth_context, *mut c_void, *mut *mut krb5_data) -> krb5_error_code;
+
+pub type krb5_cc_cursor = krb5_pointer;
+
+pub enum _krb5_ccache {}
+pub type krb5_ccache = *mut _krb5_ccache;
+pub enum _krb5_cc_ops {}
+pub type krb5_cc_ops = *mut _krb5_cc_ops;
+pub enum _krb5_cccol_cursor {}
+pub type krb5_cccol_cursor = *mut _krb5_cccol_cursor;
+
+/// The requested lifetime must be at least as great as the time specified.
+pub const KRB5_TC_MATCH_TIMES: krb5_flags        = 0x00000001;
+/// The is_skey field must match exactly
+pub const KRB5_TC_MATCH_IS_KEY: krb5_flags       = 0x00000002;
+/// All the flags set in the match credentials must be set
+pub const KRB5_TC_MATCH_FLAGS: krb5_flags        = 0x00000004;
+/// All the time fields must match exactly
+pub const KRB5_TC_MATCH_TIMES_EXACT: krb5_flags  = 0x00000008;
+/// All the flags must match exactly
+pub const KRB5_TC_MATCH_FLAGS_EXACT: krb5_flags  = 0x00000010;
+/// The authorization data must match
+pub const KRB5_TC_MATCH_AUTHDATA: krb5_flags     = 0x00000020;
+/// Only the name portion of the principal name must match
+pub const KRB5_TC_MATCH_SRV_NAMEONLY: krb5_flags = 0x00000040;
+/// The second ticket must match
+pub const KRB5_TC_MATCH_2ND_TKT: krb5_flags      = 0x00000080;
+/// The encryption key type must match
+pub const KRB5_TC_MATCH_KTYPE: krb5_flags        = 0x00000100;
+/// The supported key types must match
+pub const KRB5_TC_SUPPORTED_KTYPES: krb5_flags   = 0x00000200;
+
+/// Open and close the file for each cache operation
+pub const KRB5_TC_OPENCLOSE: krb5_flags = 0x00000001;
+pub const KRB5_TC_NOTICKKET: krb5_flags = 0x00000002;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_cc_get_name(context: krb5_context,
+                            cache: krb5_ccache) -> *const c_char;
+    // TODO: Doc
+    pub fn krb5_cc_get_full_name(context: krb5_context,
+                                 cache: krb5_ccache,
+                                 fullname_out: *mut *mut c_char) -> krb5_error_code;
+    // TODO: Doc
+    #[cfg(feature = "krb5_deprecated")]
+    pub fn krb5_cc_gen_new(context: krb5_context,
+                           cache: *mut krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_initialize(context: krb5_context,
+                              cache: krb5_ccache,
+                              principal: krb5_principal) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_destroy(context: krb5_context,
+                           cache: krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_close(context: krb5_context,
+                         cache: krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_store_cred(context: krb5_context,
+                              cache: krb5_ccache,
+                              creds: *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_retrieve_cred(context: krb5_context,
+                                 cache: krb5_ccache,
+                                 flags: krb5_flags,
+                                 mcreds: *mut krb5_creds,
+                                 creds: *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_get_principal(context: krb5_context,
+                                 cache: krb5_ccache,
+                                 principal: *mut krb5_principal) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_start_seq_get(context: krb5_context,
+                                 cache: krb5_ccache,
+                                 cursor: *mut krb5_cc_cursor) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_next_cred(context: krb5_context,
+                             cache: krb5_ccache,
+                             cursor: *mut krb5_cc_cursor,
+                             creds: *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_end_seq_get(context: krb5_context,
+                               cache: krb5_ccache,
+                               cursor: *mut krb5_cc_cursor) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_remove_cred(context: krb5_context,
+                               cache: krb5_ccache,
+                               flags: krb5_flags) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_set_flags(context: krb5_context,
+                             cache: krb5_ccache,
+                             flags: krb5_flags) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_get_flags(context: krb5_context,
+                             cache: krb5_ccache,
+                             flags: *mut krb5_flags) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_get_type(context: krb5_context,
+                            cache: krb5_ccache) -> *const c_char;
+    // TODO: Doc
+    pub fn krb5_cc_move(context: krb5_context,
+                        src: krb5_ccache,
+                        dst: krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_last_change_time(context: krb5_context,
+                                    ccache: krb5_ccache,
+                                    change_time: *mut krb5_timestamp) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_lock(context: krb5_context,
+                        ccache: krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_unlock(context: krb5_context,
+                          ccache: krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cccol_cursor_new(context: krb5_context,
+                                 cursor: *mut krb5_cccol_cursor) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cccol_cursor_next(context: krb5_context,
+                                  cursor: krb5_cccol_cursor,
+                                  ccache: *mut krb5_ccache) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cccol_cursor_free(context: krb5_context,
+                                  cursor: *mut krb5_cccol_cursor) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cccol_have_content(context: krb5_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cccol_last_change_time(context: krb5_context,
+                                       change_time: *mut krb5_timestamp) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cccol_lock(context: krb5_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cccol_unlock(context: krb5_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_cc_new_unique(context: krb5_context,
+                              type_: *const c_char,
+                              hint: *const c_char,
+                              id: *mut krb5_ccache) -> krb5_error_code;
+}
+
+pub enum krb5_rc_st {}
+pub type krb5_rcache = *mut krb5_rc_st;
+
+/// Long enough for MAXPATHLEN + some extra
+pub const MAX_KEYTAB_NAME_LEN: usize = 1100;
+
+pub type krb5_kt_cursor = krb5_pointer;
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_keytab_entry {
+    magic: krb5_magic,
+    principal: krb5_principal,
+    timestamp: krb5_timestamp,
+    vno: krb5_kvno,
+    key: krb5_keyblock
+}
+
+pub enum _krb5_kt {}
+pub type krb5_keytab = *mut _krb5_kt;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_kt_get_type(context: krb5_context,
+                            keytab: krb5_keytab) -> *const c_char;
+    // TODO: Doc
+    pub fn krb5_kt_get_name(context: krb5_context,
+                            keytab: krb5_keytab,
+                            name: *mut c_char,
+                            namelen: c_uint) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_close(context: krb5_context,
+                         keytab: krb5_keytab) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_kt_get_entry(context: krb5_context,
+                             keytab: krb5_keytab,
+                             principal: krb5_principal,
+                             vno: krb5_kvno,
+                             enctype: krb5_enctype,
+                             entry: *mut krb5_keytab_entry) -> krb5_error_code;
+
+}

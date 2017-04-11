@@ -6,5 +6,6 @@ authors = ["skeleten <skele@ymail.com>"]
 [features]
 default = []
 krb5_old_crypto = []
+krb5_deprecated = []
 
 [dependencies]
