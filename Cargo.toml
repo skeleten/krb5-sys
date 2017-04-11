@@ -3,6 +3,8 @@ name = "krb5-sys"
 version = "0.1.0"
 authors = ["skeleten <skele@ymail.com>"]
 
+repository = "https://github.com/skeleten/krb5-sys"
+
 [features]
 default = []
 krb5_old_crypto = []
