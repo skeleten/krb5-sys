@@ -1,4 +1,4 @@
-#![allow(non_camel_case_types, overflowing_literals)]
+#![allow(non_camel_case_types, non_upper_case_globals, overflowing_literals)]
 
 use std::os::raw::*;
 
@@ -2677,5 +2677,793 @@ extern "C" {
                                         start_time: krb5_deltat,
                                         in_tkt_service: *const c_char,
                                         k5_gic_options: krb5_get_init_creds_opt) -> krb5_error_code;
-    // krb5/krb5.h : 7201
 }
+
+pub enum _krb5_init_creds_context {}
+pub type krb5_init_creds_context = *mut _krb5_init_creds_context;
+
+// TODO: Doc
+pub const KRB5_INIT_CREDS_STEP_FLAG_CONTINUE: krb5_flags = 0x1;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_init_creds_free(context: krb5_context,
+                                ctx: krb5_init_creds_context);
+    // TODO: Doc
+    pub fn krb5_init_creds_get(context: krb5_context,
+                               ctx: krb5_init_creds_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_get_creds(context: krb5_context,
+                                     ctx: krb5_init_creds_context,
+                                     creds: *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_get_error(context: krb5_context,
+                                     ctx: krb5_init_creds_context,
+                                     error: *mut *mut krb5_error) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_init(context: krb5_context,
+                                client: krb5_principal,
+                                prompter: krb5_prompter_fct,
+                                data: *mut c_void,
+                                start_time: krb5_deltat,
+                                options: *mut krb5_get_init_creds_opt,
+                                ctx: *mut krb5_init_creds_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_set_keytab(context: krb5_context,
+                                      ctx: krb5_init_creds_context,
+                                      keytab: krb5_keytab) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_step(context: krb5_context,
+                                ctx: krb5_init_creds_context,
+                                in_: *mut krb5_data,
+                                out: *mut krb5_data,
+                                realm: *mut krb5_data,
+                                flags: *mut c_uint) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_set_password(context: krb5_context,
+                                        ctx: krb5_init_creds_context,
+                                        password: *const c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_set_service(context: krb5_context,
+                                       ctx: krb5_init_creds_context,
+                                       service: *const c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_init_creds_get_times(context: krb5_context,
+                                     ctx: krb5_init_creds_context,
+                                     times: *mut krb5_ticket_times) -> krb5_error_code;
+}
+
+pub enum _krb5_tkt_creds_context {}
+pub type krb5_tkt_creds_context = *mut _krb5_tkt_creds_context;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_tkt_creds_init(context: krb5_context,
+                               ccache: krb5_ccache,
+                               creds: *mut krb5_creds,
+                               options: krb5_flags,
+                               ctx: krb5_tkt_creds_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_tkt_creds_get(context: krb5_context,
+                              ctx: krb5_tkt_creds_context) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_tkt_creds_get_creds(context: krb5_context,
+                                    ctx: krb5_tkt_creds_context,
+                                    creds: *mut krb5_creds) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_tkt_creds_free(context: krb5_context,
+                               ctx: krb5_tkt_creds_context);
+}
+
+// TODO: Doc
+pub const KRB5_TKT_CREDS_STEP_FLAG_CONTINUE: krb5_flags = 0x1;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_tkt_creds_step(context: krb5_context,
+                               ctx: krb5_tkt_creds_context,
+                               in_: *mut krb5_data,
+                               out: *mut krb5_data,
+                               realm: *mut krb5_data,
+                               flags: *mut c_uint) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_tkt_creds_get_times(context: krb5_context,
+                                    ctx: krb5_tkt_creds_context,
+                                    times: *mut krb5_ticket_times) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_init_creds_keytab(context: krb5_context,
+                                      creds: *mut krb5_creds,
+                                      client: krb5_principal,
+                                      arg_keytab: krb5_keytab,
+                                      start_time: krb5_deltat,
+                                      in_tkt_service: *const c_char,
+                                      k5_gic_options: krb5_get_init_creds_opt) -> krb5_error_code;
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_verify_init_creds_opt {
+    flags: krb5_flags,
+    ap_req_nofail: c_int,
+}
+
+// TODO: Doc
+pub const KRB5_VERIFY_INIT_CREDS_OPT_AP_REQ_NOFAIL: krb5_flags = 0x0001;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_verify_init_creds_opt_init(k5_vic_options: *mut krb5_verify_init_creds_opt);
+    // TODO: Doc
+    pub fn krb5_verify_init_creds_opt_set_ap_req_nofail(k5_vic_options: *mut krb5_verify_init_creds_opt,
+                                                        ap_req_nofail: c_int);
+    // TODO: Doc
+    pub fn krb5_verify_init_creds(context: krb5_context,
+                                  creds: *mut krb5_creds,
+                                  server: krb5_principal,
+                                  keytab: krb5_keytab,
+                                  ccache: *mut krb5_ccache,
+                                  options: *mut krb5_verify_init_creds_opt) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_validated_creds(context: krb5_context,
+                                    creds: *mut krb5_creds,
+                                    client: krb5_principal,
+                                    ccache: krb5_ccache,
+                                    in_tkt_service: *const c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_get_renewed_creds(context: krb5_context,
+                                  creds: *mut krb5_creds,
+                                  client: krb5_principal,
+                                  ccache: krb5_ccache,
+                                  in_tkt_service: *const c_char) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_decode_ticket(code: *const krb5_data,
+                              rep: *mut *mut krb5_ticket) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_appdefault_string(context: krb5_context,
+                                  appname: *const c_char,
+                                  realm: *const krb5_data,
+                                  option: *const c_char,
+                                  default_value: *const c_char,
+                                  ret_value: *mut *mut c_char);
+    // TODO: Doc
+    pub fn krb5_appdefault_boolean(context: krb5_context,
+                                   appname: *const c_char,
+                                   realm: *const krb5_data,
+                                   option: *const c_char,
+                                   default_value: c_int,
+                                   ret_value: *mut c_int);
+}
+
+// TODO: Doc
+pub const KRB5_PROMPT_TYPE_PASSWORD: krb5_prompt_type = 0x1;
+// TODO: Doc
+pub const KRB5_PROMPT_TYPE_NEW_PASSWORD: krb5_prompt_type = 0x2;
+// TODO: Doc
+pub const KRB5_PROMPT_TYPE_NEW_PASSWORD_AGAIN: krb5_prompt_type = 0x3;
+// TODO: Doc
+pub const KRB5_PROMPT_TYPE_PREAUTH: krb5_prompt_type = 0x4;
+
+pub type krb5_prompt_type = krb5_int32;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_get_prompt_types(context: krb5_context) -> *mut krb5_prompt_type;
+    // TODO: Doc
+    pub fn krb5_set_error_message(ctx: krb5_context,
+                                  code: krb5_error_code,
+                                  fmt: *const c_char, ...);
+    // TODO: Doc
+    // TODO: `krb5_vset_error_message` function (va_list)!
+
+    // TODO: Doc
+    pub fn krb5_copy_error_message(dest_ctx: krb5_context,
+                                   src_ctx: krb5_context);
+    // TODO: Doc
+    pub fn krb5_get_error_message(ctx: krb5_context,
+                                  code: krb5_error_code) -> *const c_char;
+    // TODO: Doc
+    pub fn krb5_free_error_message(ctx: krb5_context,
+                                   msg: *const c_char);
+    // TODO: Doc
+    pub fn krb5_clear_error_message(ctx: krb5_context);
+    // TODO: Doc
+    pub fn krb5_decode_authdata_container(context: krb5_context,
+                                          type_: krb5_authdatatype,
+                                          container: *const krb5_authdata,
+                                          authdata: *mut *mut *mut krb5_authdata) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_make_authdata_kdc_issued(context: krb5_context,
+                                         key: *const krb5_keyblock,
+                                         issuer: krb5_const_principal,
+                                         authdata: *mut *const krb5_authdata,
+                                         ad_kdcissued: *mut *mut *mut krb5_authdata) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_verify_authdata_kdc_issued(context: krb5_context,
+                                           key: *const krb5_keyblock,
+                                           ad_kdcissued: *const krb5_authdata,
+                                           issuer: *mut krb5_principal,
+                                           authdata: *mut *mut *mut krb5_authdata) -> krb5_error_code;
+}
+
+// TODO: Doc
+pub const KRB5_PAC_LOGON_INFO: krb5_ui_4 = 1;
+// TODO: Doc
+pub const KRB5_PAC_CREDENTIALS_INFO: krb5_ui_4 = 2;
+// TODO: Doc
+pub const KRB5_PAC_SERVER_CHECKSUM: krb5_ui_4 = 6;
+// TODO: Doc
+pub const KRB5_PRIVSVR_CHECKSUM: krb5_ui_4 = 7;
+// TODO: Doc
+pub const KRB5_PAC_CLIENT_INFO: krb5_ui_4 = 10;
+// TODO: Doc
+pub const KRB5_PAC_DELEGATION_INFO: krb5_ui_4 = 11;
+// TODO: Doc
+pub const KRB5_PAC_UPN_DNS_INFO: krb5_ui_4 = 12;
+
+pub enum krb5_pac_data {}
+pub type krb5_pac = *mut krb5_pac_data;
+
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_pac_add_buffer(context: krb5_context,
+                               pac: krb5_pac,
+                               type_: krb5_ui_4,
+                               data: *const krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_pac_free(context: krb5_context,
+                         pac: krb5_pac);
+    // TODO: Doc
+    pub fn krb5_pac_get_buffer(context: krb5_context,
+                               pac: krb5_pac,
+                               type_: krb5_ui_4,
+                               data: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_pac_get_types(context: krb5_context,
+                              pac: krb5_pac,
+                              len: *mut usize,
+                              types: *mut *mut krb5_ui_4) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_pac_init(context: krb5_context,
+                         pac: *mut krb5_pac) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_pac_parse(context: krb5_context,
+                          ptr: *const c_void,
+                          len: usize,
+                          pac: *mut krb5_pac) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_pac_verify(context: krb5_context,
+                           pac: krb5_pac,
+                           authtime: krb5_timestamp,
+                           principal: krb5_const_principal,
+                           server: *const krb5_keyblock,
+                           privsvr: *const krb5_keyblock) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_pac_sign(context: krb5_context,
+                         pac: krb5_pac,
+                         authtime: krb5_timestamp,
+                         principal: krb5_const_principal,
+                         server_key: *const krb5_keyblock,
+                         privsvr_key: *const krb5_keyblock,
+                         data: *mut krb5_data) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_allow_weak_crypt(context: krb5_context,
+                                 enable: krb5_boolean) -> krb5_error_code;
+}
+
+// TODO: Docs
+#[repr(C)]
+pub struct krb5_trace_info {
+    message: *const c_char,
+}
+
+pub type krb5_trace_callback = extern "C" fn(context: krb5_context,
+                                             info: *const krb5_trace_info,
+                                             cb_data: *mut c_void);
+extern "C" {
+    // TODO: Doc
+    pub fn krb5_set_trace_callback(context: krb5_context,
+                                   fn_: krb5_trace_callback,
+                                   cb_data: *mut c_void) -> krb5_error_code;
+    // TODO: Doc
+    pub fn krb5_set_trace_filename(context: krb5_context,
+                                   filename: *const c_char) -> krb5_error_code;
+}
+
+// include <et/com_err.h>
+
+pub const KRB5KDC_ERR_NONE: krb5_error_code                                = (-1765328384);
+pub const KRB5KDC_ERR_NAME_EXP: krb5_error_code                            = (-1765328383);
+pub const KRB5KDC_ERR_SERVICE_EXP: krb5_error_code                         = (-1765328382);
+pub const KRB5KDC_ERR_BAD_PVNO: krb5_error_code                            = (-1765328381);
+pub const KRB5KDC_ERR_C_OLD_MAST_KVNO: krb5_error_code                     = (-1765328380);
+pub const KRB5KDC_ERR_S_OLD_MAST_KVNO: krb5_error_code                     = (-1765327379);
+pub const KRB5KDC_ERR_C_PRINCIPAL_UNKNOWN: krb5_error_code                 = (-1765328378);
+pub const KRB5KDC_ERR_S_PRINCIPAL_UNKNOWN: krb5_error_code                 = (-1765328377);
+pub const KRB5KDC_ERR_PRINCIPAL_NOT_UNIQUE: krb5_error_code                = (-1765328376);
+pub const KRB5KDC_ERR_NULL_KEY: krb5_error_code                            = (-1765328375);
+pub const KRB5KDC_ERR_CANNOT_POSTDATE: krb5_error_code                     = (-1765328374);
+pub const KRB5KDC_ERR_NEVER_VALID: krb5_error_code                         = (-1765328373);
+pub const KRB5KDC_ERR_POLICY: krb5_error_code                              = (-1765328372);
+pub const KRB5KDC_ERR_BADOPTION: krb5_error_code                           = (-1765328371);
+pub const KRB5KDC_ERR_ETYPE_NOSUPP: krb5_error_code                        = (-1765328370);
+pub const KRB5KDC_ERR_SUMTYPE_NOSUPP: krb5_error_code                      = (-1765328369);
+pub const KRB5KDC_ERR_PADATA_TYPE_NOSUPP: krb5_error_code                  = (-1765328368);
+pub const KRB5KDC_ERR_TRTYPE_NOSUPPP: krb5_error_code                      = (-1765328367);
+pub const KRB5KDC_ERR_CLIENT_REVOKED: krb5_error_code                      = (-1765328366);
+pub const KRB5KDC_ERR_SERVICE_REVOKED: krb5_error_code                     = (-1765328365);
+pub const KRB5KDC_ERR_TGT_REVOKED: krb5_error_code                         = (-1765328364);
+pub const KRB5KDC_ERR_CLIENT_NOTYET: krb5_error_code                       = (-1765328363);
+pub const KRB5KDC_ERR_SERVICE_NOTYET: krb5_error_code                      = (-1765328362);
+pub const KRB5KDC_ERR_KEY_EXP: krb5_error_code                             = (-1765328361);
+pub const KRB5KDC_ERR_PREAUTH_FAILED: krb5_error_code                      = (-1765328360);
+pub const KRB5KDC_ERR_PREAUTH_REQUIRED: krb5_error_code                    = (-1765328359);
+pub const KRB5KDC_ERR_SERVER_NOMATCH: krb5_error_code                      = (-1765328358);
+pub const KRB5KDC_ERR_MUST_USE_USER2USER: krb5_error_code                  = (-1765328357);
+pub const KRB5KDC_ERR_PATH_NOT_ACCEPTED: krb5_error_code                   = (-1765328356);
+pub const KRB5KDC_ERR_SVC_UNAVAILABLE: krb5_error_code                     = (-1765328355);
+pub const KRB5PLACEHOLD_30: krb5_error_code                                = (-1765328354);
+pub const KRB5KRB_AP_ERR_BAD_INTEGRITY: krb5_error_code                    = (-1765328353);
+pub const KRB5KRB_AP_ERR_TKT_EXPIRED: krb5_error_code                      = (-1765328352);
+pub const KRB5KRB_AP_ERR_TKT_NYV: krb5_error_code                          = (-1765328351);
+pub const KRB5KRB_AP_ERR_REPEAT: krb5_error_code                           = (-1765328350);
+pub const KRB5KRB_AP_ERR_NOT_US: krb5_error_code                           = (-1765328349);
+pub const KRB5KRB_AP_ERR_BADMATCH: krb5_error_code                         = (-1765328348);
+pub const KRB5KRB_AP_ERR_SKES: krb5_error_code                             = (-1765328347);
+pub const KRB5KRB_AP_ERR_BADADDR: krb5_error_code                          = (-1765328346);
+pub const KRB5KRB_AP_ERR_BADVERSION: krb5_error_code                       = (-1765328345);
+pub const KRB5KRB_AP_ERR_MSG_TYPE: krb5_error_code                         = (-1765328344);
+pub const KRB5KRB_AP_ERR_MODIFIED: krb5_error_code                         = (-1765328343);
+pub const KRB5KRB_AP_ERR_BADORDER: krb5_error_code                         = (-1765328342);
+pub const KRB5KRB_AP_ERR_ILL_CR_TKT: krb5_error_code                       = (-1765328341);
+pub const KRB5KRB_AP_ERR_BADKEYVER: krb5_error_code                        = (-1765328340);
+pub const KRB5KRB_AP_ERR_NOKEY: krb5_error_code                            = (-1765328339);
+pub const KRB5KRB_AP_ERR_MUT_FAIL: krb5_error_code                         = (-1765328338);
+pub const KRB5KRB_AP_ERR_BADDIRECTION: krb5_error_code                     = (-1765328337);
+pub const KRB5KRB_AP_ERR_METHOD: krb5_error_code                           = (-1765328336);
+pub const KRB5KRB_AP_ERR_BADSEQ: krb5_error_code                           = (-1765328335);
+pub const KRB5KRB_AP_ERR_INAPP_CKSUM: krb5_error_code                      = (-1765328334);
+pub const KRB5KRB_AP_PATH_NOT_ACCEPTED: krb5_error_code                    = (-1765328333);
+pub const KRB5KRB_ERR_RESPONSE_TOO_BIG: krb5_error_code                    = (-1765328332);
+pub const KRB5PLACEHOLD_53: krb5_error_code                                = (-1765328331);
+pub const KRB5PLACEHOLD_54: krb5_error_code                                = (-1765328330);
+pub const KRB5PLACEHOLD_55: krb5_error_code                                = (-1765328329);
+pub const KRB5PLACEHOLD_56: krb5_error_code                                = (-1765328328);
+pub const KRB5PLACEHOLD_57: krb5_error_code                                = (-1765328327);
+pub const KRB5PLACEHOLD_58: krb5_error_code                                = (-1765328326);
+pub const KRB5PLACEHOLD_59: krb5_error_code                                = (-1765328325);
+pub const KRB5KRB_ERR_GENERIC: krb5_error_code                             = (-1765328324);
+pub const KRB5KRB_ERR_FIELD_TOOLONG: krb5_error_code                       = (-1765328323);
+pub const KRB5KRB_ERR_CLIENT_NOT_TRUSTED: krb5_error_code                  = (-1765328322);
+pub const KRB5KRB_ERR_KDC_NOT_TRUSTED: krb5_error_code                     = (-1765328321);
+pub const KRB5KRB_ERR_INVALID_SIG: krb5_error_code                         = (-1765328320);
+pub const KRB5KRB_ERR_DH_KEY_PARAMETERS_NOT_ACCEPTED: krb5_error_code      = (-1765328319);
+pub const KRB5KRB_ERR_CERTIFICATE_MISMATCH: krb5_error_code                = (-1765328318);
+pub const KRB5KRB_AP_ERR_NO_TGT: krb5_error_code                           = (-1765328317);
+pub const KRB5KDC_ERR_WRONG_REALM: krb5_error_code                         = (-1765328316);
+pub const KRB5KRB_APP_ERR_USER_TO_USER_REQUIRED: krb5_error_code           = (-1765328315);
+pub const KRB5KDC_ERR_CANT_VERIFY_CERTIFICATE: krb5_error_code             = (-1765328314);
+pub const KRB5KDC_ERR_INVALID_CERTIFICATE: krb5_error_code                 = (-1765328313);
+pub const KRB5KDC_ERR_REVOKED_CERTIFICATE: krb5_error_code                 = (-1765328312);
+pub const KRB5KDC_ERR_REVOCATION_STATUS_UNKNOWN: krb5_error_code           = (-1765328311);
+pub const KRB5KDC_ERR_REVOCATION_STATUS_UNAVAILABLE: krb5_error_code       = (-1765328310);
+pub const KRB5KDC_ERR_CLIENT_NAME_MISMATCH: krb5_error_code                = (-1765328309);
+pub const KRB5KDC_ERR_KDC_NAME_MISMATCH: krb5_error_code                   = (-1765328308);
+pub const KRB5KDC_ERR_INCONSISTENT_KEY_PURPOSE: krb5_error_code            = (-1765328307);
+pub const KRB5KDC_ERR_DIGEST_IN_CERT_NOT_ACCEPTED: krb5_error_code         = (-1765328306);
+pub const KRB5KDC_ERR_PA_CHECKSUM_IN_CERT_NOT_ACCEPTED: krb5_error_code    = (-1765328305);
+pub const KRB5KDC_ERR_DIGEST_IN_SIGNED_DATA_NOT_ACCEPTED: krb5_error_code  = (-1765328304);
+pub const KRB5KDC_ERR_PUBLIC_KEY_ENCRYPTION_NOT_SUPPORTED: krb5_error_code = (-1765328303);
+pub const KRB5PLACEHOLD_82: krb5_error_code                                = (-1765328302);
+pub const KRB5PLACEHOLD_83: krb5_error_code                                = (-1765328301);
+pub const KRB5PLACEHOLD_84: krb5_error_code                                = (-1765328300);
+pub const KRB5KRB_AP_ERR_IAKERB_KDC_NOT_FOUND: krb5_error_code             = (-1765328299);
+pub const KRB5KRB_AP_ERR_IAKERB_KDC_NO_RESPONSE: krb5_error_code           = (-1765328298);
+pub const KRB5PLACEHOLD_87: krb5_error_code                                = (-1765328297);
+pub const KRB5PLACEHOLD_88: krb5_error_code                                = (-1765328296);
+pub const KRB5PLACEHOLD_89: krb5_error_code                                = (-1765328295);
+pub const KRB5PLACEHOLD_90: krb5_error_code                                = (-1765328294);
+pub const KRB5PLACEHOLD_91: krb5_error_code                                = (-1765328293);
+pub const KRB5PLACEHOLD_92: krb5_error_code                                = (-1765328292);
+pub const KRB5KDC_ERR_UNKNOWN_CRITICAL_FAST_OPTION: krb5_error_code        = (-1765328291);
+pub const KRB5PLACEHOLD_94: krb5_error_code                                = (-1765328290);
+pub const KRB5PLACEHOLD_95: krb5_error_code                                = (-1765328289);
+pub const KRB5PLACEHOLD_96: krb5_error_code                                = (-1765328288);
+pub const KRB5PLACEHOLD_97: krb5_error_code                                = (-1765328287);
+pub const KRB5PLACEHOLD_98: krb5_error_code                                = (-1765328286);
+pub const KRB5PLACEHOLD_99: krb5_error_code                                = (-1765328285);
+pub const KRB5KDC_ERR_NO_ACCEPTABLE_KDF: krb5_error_code                   = (-1765328284);
+pub const KRB5PLACEHOLD_101: krb5_error_code                               = (-1765328283);
+pub const KRB5PLACEHOLD_102: krb5_error_code                               = (-1765328282);
+pub const KRB5PLACEHOLD_103: krb5_error_code                               = (-1765328281);
+pub const KRB5PLACEHOLD_104: krb5_error_code                               = (-1765328280);
+pub const KRB5PLACEHOLD_105: krb5_error_code                               = (-1765328279);
+pub const KRB5PLACEHOLD_106: krb5_error_code                               = (-1765328278);
+pub const KRB5PLACEHOLD_107: krb5_error_code                               = (-1765328277);
+pub const KRB5PLACEHOLD_108: krb5_error_code                               = (-1765328276);
+pub const KRB5PLACEHOLD_109: krb5_error_code                               = (-1765328275);
+pub const KRB5PLACEHOLD_110: krb5_error_code                               = (-1765328274);
+pub const KRB5PLACEHOLD_111: krb5_error_code                               = (-1765328273);
+pub const KRB5PLACEHOLD_112: krb5_error_code                               = (-1765328272);
+pub const KRB5PLACEHOLD_113: krb5_error_code                               = (-1765328271);
+pub const KRB5PLACEHOLD_114: krb5_error_code                               = (-1765328270);
+pub const KRB5PLACEHOLD_115: krb5_error_code                               = (-1765328269);
+pub const KRB5PLACEHOLD_116: krb5_error_code                               = (-1765328268);
+pub const KRB5PLACEHOLD_117: krb5_error_code                               = (-1765328267);
+pub const KRB5PLACEHOLD_118: krb5_error_code                               = (-1765328266);
+pub const KRB5PLACEHOLD_119: krb5_error_code                               = (-1765328265);
+pub const KRB5PLACEHOLD_120: krb5_error_code                               = (-1765328264);
+pub const KRB5PLACEHOLD_121: krb5_error_code                               = (-1765328263);
+pub const KRB5PLACEHOLD_122: krb5_error_code                               = (-1765328262);
+pub const KRB5PLACEHOLD_123: krb5_error_code                               = (-1765328261);
+pub const KRB5PLACEHOLD_124: krb5_error_code                               = (-1765328260);
+pub const KRB5PLACEHOLD_125: krb5_error_code                               = (-1765328259);
+pub const KRB5PLACEHOLD_126: krb5_error_code                               = (-1765328258);
+pub const KRB5PLACEHOLD_127: krb5_error_code                               = (-1765328257);
+pub const KRB5_ERR_RCSID: krb5_error_code                                  = (-1765328256);
+pub const KRB5_LIBOS_BADLOCKFLAG: krb5_error_code                          = (-1765328255);
+pub const KRB5_LIBOS_CANTREADPWD: krb5_error_code                          = (-1765328254);
+pub const KRB5_LIBOS_BADPWDMATCH: krb5_error_code                          = (-1765328253);
+pub const KRB5_LIBOS_PWDINTR: krb5_error_code                              = (-1765328252);
+pub const KRB5_PARSE_ILLCHAR: krb5_error_code                              = (-1765328251);
+pub const KRB5_PARSE_MALFORMED: krb5_error_code                            = (-1765328250);
+pub const KRB5_CONFIG_CANTOPEN: krb5_error_code                            = (-1765328249);
+pub const KRB5_CONFIG_BADFORMAT: krb5_error_code                           = (-1765328248);
+pub const KRB5_CONFIG_NOTENUFSPACE: krb5_error_code                        = (-1765328247);
+pub const KRB5_BADMSGTYPE: krb5_error_code                                 = (-1765328246);
+pub const KRB5_CC_BADNAME: krb5_error_code                                 = (-1765328245);
+pub const KRB5_CC_UNKNOWN_TYPE: krb5_error_code                            = (-1765328244);
+pub const KRB5_CC_NOTFOUND: krb5_error_code                                = (-1765328243);
+pub const KRB5_CC_END: krb5_error_code                                     = (-1765328242);
+pub const KRB5_NO_TKT_SUPPLIED: krb5_error_code                            = (-1765328241);
+pub const KRB5KRB_AP_WRONG_PRINC: krb5_error_code                          = (-1765328240);
+pub const KRB5KRB_AP_ERR_TKT_INVALID: krb5_error_code                      = (-1765328239);
+pub const KRB5_PRINC_NOMATCH: krb5_error_code                              = (-1765328238);
+pub const KRB5_KDCREP_MODIFIED: krb5_error_code                            = (-1765328237);
+pub const KRB5_KDCREP_SKEW: krb5_error_code                                = (-1765328236);
+pub const KRB5_IN_TKT_REALM_MISMATCH: krb5_error_code                      = (-1765328235);
+pub const KRB5_PROG_ETYPE_NOSUPP: krb5_error_code                          = (-1765328234);
+pub const KRB5_PROG_KEYTYPE_NOSUPP: krb5_error_code                        = (-1765328233);
+pub const KRB5_WRONG_ETYPE: krb5_error_code                                = (-1765328232);
+pub const KRB5_PROG_SUMTYPE_NOSUPP: krb5_error_code                        = (-1765328231);
+pub const KRB5_REALM_UNKNOWN: krb5_error_code                              = (-1765328230);
+pub const KRB5_SERVICE_UNKNOWN: krb5_error_code                            = (-1765328229);
+pub const KRB5_KDC_UNREACH: krb5_error_code                                = (-1765328228);
+pub const KRB5_NO_LOCALNAME: krb5_error_code                               = (-1765328227);
+pub const KRB5_MUTUAL_FAILED: krb5_error_code                              = (-1765328226);
+pub const KRB5_RC_TYPE_EXISTS: krb5_error_code                             = (-1765328225);
+pub const KRB5_RC_MALLOC: krb5_error_code                                  = (-1765328224);
+pub const KRB5_RC_TYPE_NOTFOUND: krb5_error_code                           = (-1765328223);
+pub const KRB5_RC_UNKNOWN: krb5_error_code                                 = (-1765328222);
+pub const KRB5_RC_REPLAY: krb5_error_code                                  = (-1765328221);
+pub const KRB5_RC_IO: krb5_error_code                                      = (-1765328220);
+pub const KRB5_RC_NOIO: krb5_error_code                                    = (-1765328219);
+pub const KRB5_RC_PARSE: krb5_error_code                                   = (-1765328218);
+pub const KRB5_RC_IO_EOF: krb5_error_code                                  = (-1765328217);
+pub const KRB5_RC_IO_MALLOC: krb5_error_code                               = (-1765328216);
+pub const KRB5_RC_IO_PERM: krb5_error_code                                 = (-1765328215);
+pub const KRB5_RC_IO_IO: krb5_error_code                                   = (-1765328214);
+pub const KRB5_RC_IO_SPACE: krb5_error_code                                = (-1765328212);
+pub const KRB5_TRANS_CANTOPEN: krb5_error_code                             = (-1765328211);
+pub const KRB5_TRANS_BADFORMAT: krb5_error_code                            = (-1765328210);
+pub const KRB5_LNAME_CANTOPEN: krb5_error_code                             = (-1765328209);
+pub const KRB5_LNAME_NOTRANS: krb5_error_code                              = (-1765328208);
+pub const KRB5_LNAME_BADFORMAT: krb5_error_code                            = (-1765328207);
+pub const KRB5_CRYPTO_INTERNAL: krb5_error_code                            = (-1765328206);
+pub const KRB5_KT_BADNAME: krb5_error_code                                 = (-1765328205);
+pub const KRB5_KT_UNKNOWN_TYPE: krb5_error_code                            = (-1765328204);
+pub const KRB5_KT_NOTFOUND: krb5_error_code                                = (-1765328203);
+pub const KRB5_KT_END: krb5_error_code                                     = (-1765328202);
+pub const KRB5_KT_NOWRITE: krb5_error_code                                 = (-1765328201);
+pub const KRB5_KT_IOERR: krb5_error_code                                   = (-1765328200);
+pub const KRB5_NO_TKT_IN_RLM: krb5_error_code                              = (-1765328199);
+pub const KRB5DES_BAD_KEYPAR: krb5_error_code                              = (-1765328198);
+pub const KRB5DES_WEAK_KEY: krb5_error_code                                = (-1765328197);
+pub const KRB5_BAD_ENCTYPE: krb5_error_code                                = (-1765328196);
+pub const KRB5_BAD_KEYSIZE: krb5_error_code                                = (-1765328195);
+pub const KRB5_BAD_MSIZE: krb5_error_code                                  = (-1765328194);
+pub const KRB5_CC_TYPE_EXISTS: krb5_error_code                             = (-1765328193);
+pub const KRB5_KT_TYPE_EXISTS: krb5_error_code                             = (-1765328192);
+pub const KRB5_CC_IO: krb5_error_code                                      = (-1765328191);
+pub const KRB5_FCC_PERM: krb5_error_code                                   = (-1765328190);
+pub const KRB5_FCC_NOFILE: krb5_error_code                                 = (-1765328189);
+pub const KRB5_FCC_INTERNAL: krb5_error_code                               = (-1765328188);
+pub const KRB5_CC_WRITE: krb5_error_code                                   = (-1765328187);
+pub const KRB5_CC_NOMEM: krb5_error_code                                   = (-1765328186);
+pub const KRB5_CC_FORMAT: krb5_error_code                                  = (-1765328185);
+pub const KRB5_CC_NOT_KTYPE: krb5_error_code                               = (-1765328184);
+pub const KRB5_INVALID_FLAGS: krb5_error_code                              = (-1765328183);
+pub const KRB5_NO_2ND_TKT: krb5_error_code                                 = (-1765328182);
+pub const KRB5_NOCREDS_SUPPLIED: krb5_error_code                           = (-1765328181);
+pub const KRB5_SENDAUTH_BADAUTHVERS: krb5_error_code                       = (-1765328180);
+pub const KRB5_SENDAUTH_BADAPPLVERS: krb5_error_code                       = (-1765328179);
+pub const KRB5_SENDAUTH_BADRESPONSE: krb5_error_code                       = (-1765328178);
+pub const KRB5_SENDAUTH_REJECTED: krb5_error_code                          = (-1765328177);
+pub const KRB5_PREAUTH_BAD_TYPE: krb5_error_code                           = (-1765328176);
+pub const KRB5_PREAUTH_NO_KEY: krb5_error_code                             = (-1765328175);
+pub const KRB5_PREAUTH_FAILED: krb5_error_code                             = (-1765328174);
+pub const KRB5_RCACHE_BADVNO: krb5_error_code                              = (-1765328173);
+pub const KRB5_CCACHE_BADVNO: krb5_error_code                              = (-1765328172);
+pub const KRB5_KEYTAB_BADVNO: krb5_error_code                              = (-1765328171);
+pub const KRB5_PROG_ATYPE_NOSUPP: krb5_error_code                          = (-1765328170);
+pub const KRB5_RC_REQUIRED: krb5_error_code                                = (-1765328169);
+pub const KRB5_ERR_BAD_HOSTNAME: krb5_error_code                           = (-1765328168);
+pub const KRB5_ERR_HOST_REALM_UNKNOWN: krb5_error_code                     = (-1765328167);
+pub const KRB5_SNAME_UNSUPP_NAMETYPE: krb5_error_code                      = (-1765328166);
+pub const KRB5KRB_AP_ERR_V4_REPLY: krb5_error_code                         = (-1765328165);
+pub const KRB5_REALM_CANT_RESOLVE: krb5_error_code                         = (-1765328164);
+pub const KRB5_TKT_NOT_FORWARDABLE: krb5_error_code                        = (-1765328163);
+pub const KRB5_FWD_BAD_PRINCIPAL: krb5_error_code                          = (-1765328162);
+pub const KRB5_GET_IN_TKT_LOOP: krb5_error_code                            = (-1765328161);
+pub const KRB5_CONFIG_NODEFREALM: krb5_error_code                          = (-1765328160);
+pub const KRB5_SAM_UNSUPPORTED: krb5_error_code                            = (-1765328159);
+pub const KRB5_SAM_INVALID_ETYPE: krb5_error_code                          = (-1765328158);
+pub const KRB5_SAM_NO_CHECKSUM: krb5_error_code                            = (-1765328157);
+pub const KRB5_SAM_BAD_CHECKSUM: krb5_error_code                           = (-1765328156);
+pub const KRB5_KT_NAME_TOOLONG: krb5_error_code                            = (-1765328155);
+pub const KRB5_KT_KVNONOTFOUND: krb5_error_code                            = (-1765328154);
+pub const KRB5_APPL_EXPIRED: krb5_error_code                               = (-1765328153);
+pub const KRB5_LIB_EXPIRED: krb5_error_code                                = (-1765328152);
+pub const KRB5_CHPW_PWDNULL: krb5_error_code                               = (-1765328151);
+pub const KRB5_CHPW_FAIL: krb5_error_code                                  = (-1765328150);
+pub const KRB5_KT_FORMAT: krb5_error_code                                  = (-1765328149);
+pub const KRB5_NOPERM_ETYPE: krb5_error_code                               = (-1765328148);
+pub const KRB5_CONFIG_ETYPE_NOSUPP: krb5_error_code                        = (-1765328147);
+pub const KRB5_OBSOLETE_FN: krb5_error_code                                = (-1765328146);
+pub const KRB5_EAI_FAIL: krb5_error_code                                   = (-1765328145);
+pub const KRB5_EAI_NODATA: krb5_error_code                                 = (-1765328144);
+pub const KRB5_EAI_NONAME: krb5_error_code                                 = (-1765328143);
+pub const KRB5_EAI_SERVICE: krb5_error_code                                = (-1765328142);
+pub const KRB5_ERR_NUMERIC_REALM: krb5_error_code                          = (-1765328141);
+pub const KRB5_ERR_BAD_S2K_PARAMS: krb5_error_code                         = (-1765328140);
+pub const KRB5_ERR_NO_SERVICE: krb5_error_code                             = (-1765328139);
+pub const KRB5_CC_READONLY: krb5_error_code                                = (-1765328138);
+pub const KRB5_CC_NOSUPP: krb5_error_code                                  = (-1765328137);
+pub const KRB5_DELTAT_BADFORMAT: krb5_error_code                           = (-1765328136);
+pub const KRB5_PLUGIN_NO_HANDLE: krb5_error_code                           = (-1765328135);
+pub const KRB5_PLUGIN_OP_NOTSUPP: krb5_error_code                          = (-1765328134);
+pub const KRB5_ERR_INVALID_UTF8: krb5_error_code                           = (-1765328133);
+pub const KRB5_ERR_FAST_REQUIRED: krb5_error_code                          = (-1765328132);
+pub const KRB5_LOCAL_ADDR_REQUIRED: krb5_error_code                        = (-1765328131);
+pub const KRB5_REMOTE_ADDR_REQUIRED: krb5_error_code                       = (-1765328130);
+pub const KRB5_TRACE_NOSUPP: krb5_error_code                               = (-1765328129);
+
+// NOTE: from krb5/krb5.h : 8445
+//       not quite sure how to translate this.
+pub enum error_table {}
+pub enum et_krb5_error_table {}
+
+// TODO: not defined here. search where from!
+pub enum et_list {}
+
+extern "C" {
+    // TODO: Doc
+    // NOTE: also extern in header
+    pub fn initialize_krb5_error_table();
+    pub fn initialize_krb5_error_table_r(list: *mut *mut et_list);
+}
+
+pub const ERROR_TABLE_BASE_krb5: krb5_error_code = (-1765328384);
+
+// TODO: Two defines here for compability with older versions
+
+// include et/com_err.h
+
+pub const KRB5_PLUGIN_VER_NOTSUPP: krb5_error_code     = (-1750600192);
+pub const KRB5_PLUGIN_BAD_MODULE_SPEC: krb5_error_code = (-1750600191);
+pub const KRB5_PLUGIN_NAME_NOTFOUND: krb5_error_code   = (-1750600190);
+pub const KRB5KDC_ERR_DISCARD: krb5_error_code         = (-1750600189);
+pub const KRB5_DCC_CANNOT_CREATE: krb5_error_code      = (-1750600188);
+pub const KRB5_KCC_INVALID_ANCHOR: krb5_error_code     = (-1750600187);
+pub const KRB5_KCC_UNKNOWN_VERSION: krb5_error_code    = (-1750600186);
+pub const KRB5_KCC_INVALID_UID: krb5_error_code        = (-1750600185);
+pub const KRB5_KCM_MALFORMED_REPLY: krb5_error_code    = (-1750600184);
+pub const KRB5_KCM_RPC_ERROR: krb5_error_code          = (-1750600183);
+pub const KRB5_KCM_REPLY_TOO_BIG: krb5_error_code      = (-1750600182);
+pub const KRB5_KCM_NO_SERVER: krb5_error_code          = (-1750600181);
+
+// extern const here
+
+extern "C" {
+    // TODO: Doc
+    // NOTE: Also extern in header
+    pub fn initialize_k5e1_error_table();
+    // TODO: Doc
+    // NOTE: also extern in header
+    pub fn initialize_k5e1_error_table_r(list: *mut *mut et_list);
+}
+
+pub const ERROR_TABLE_BASE_k5e1: krb5_error_code = (-1750600192);
+
+// TODO: two defines for compability with older versions.
+
+// TODO: include et/com_err.h
+
+pub const KRB5_KDB_RCSID: krb5_error_code                  = (-1780008448);
+pub const KRB5_KDB_INUSE: krb5_error_code                  = (-1780008447);
+pub const KRB5_KDB_UK_SERROR: krb5_error_code              = (-1780008446);
+pub const KRB5_KDB_UK_RERROR: krb5_error_code              = (-1780008445);
+pub const KRB5_KDB_UNAUTH: krb5_error_code                 = (-1780008444);
+pub const KRB5_KDB_NOENTRY: krb5_error_code                = (-1780008443);
+pub const KRB5_KDB_ILL_WILDCARD: krb5_error_code           = (-1780008442);
+pub const KRB5_KDB_DB_INUSE: krb5_error_code               = (-1780008441);
+pub const KRB5_KDB_DB_CHANGED: krb5_error_code             = (-1780008440);
+pub const KRB5_KDB_TRUNCATED_RECORD: krb5_error_code       = (-1780008439);
+pub const KRB5_KDB_RECURSIVELOCK: krb5_error_code          = (-1780008438);
+pub const KRB5_KDB_NOTLOCKED: krb5_error_code              = (-1780008437);
+pub const KRB5_KDB_BADLOCKMODE: krb5_error_code            = (-1780008436);
+pub const KRB5_KDB_DBNOTINITED: krb5_error_code            = (-1780008435);
+pub const KRB5_KDB_DBINITED: krb5_error_code               = (-1780008434);
+pub const KRB5_KDB_ILLDIRECTION: krb5_error_code           = (-1780008433);
+pub const KRB5_KDB_NOMASTERKEY: krb5_error_code            = (-1780008432);
+pub const KRB5_KDB_BADMASTERKEY: krb5_error_code           = (-1780008431);
+pub const KRB5_KDB_INVALIDKEYSIZE: krb5_error_code         = (-1780008430);
+pub const KRB5_KDB_CANTREAD_STORED: krb5_error_code        = (-1780008429);
+pub const KRB5_KDB_BADSTORED_MKEY: krb5_error_code         = (-1780008428);
+pub const KRB5_KDB_NOACTMASTERKEY: krb5_error_code         = (-1780008427);
+pub const KRB5_KDB_KVNONOMATCH: krb5_error_code            = (-1780008426);
+pub const KRB5_KDB_STORED_MKEY_NOTCURRENT: krb5_error_code = (-1780008425);
+pub const KRB5_KDB_CANTLOCK_DB: krb5_error_code            = (-1780008424);
+pub const KRB5_KDB_DB_CORRUPT: krb5_error_code             = (-1780008423);
+pub const KRB5_KDB_BAD_VERSION: krb5_error_code            = (-1780008422);
+pub const KRB5_KDB_BAD_SALTTYPE: krb5_error_code           = (-1780008421);
+pub const KRB5_KDB_BAD_ENCTYPE: krb5_error_code            = (-1780008420);
+pub const KRB5_KDB_BAD_CREATEFLAGS: krb5_error_code        = (-1780008419);
+pub const KRB5_KDB_NO_PERMITTED_KEY: krb5_error_code       = (-1780008418);
+pub const KRB5_KDB_NO_MATCHING_KEY: krb5_error_code        = (-1780008417);
+pub const KRB5_KDB_DBTYPE_NOTFOUND: krb5_error_code        = (-1780008416);
+pub const KRB5_KDB_DBTYPE_NOSUP: krb5_error_code           = (-1780008415);
+pub const KRB5_KDB_DBTYPE_INIT: krb5_error_code            = (-1780008414);
+pub const KRB5_KDB_SERVER_INTERNAL_ERR: krb5_error_code    = (-1780008413);
+pub const KRB5_KDB_ACCESS_ERROR: krb5_error_code           = (-1780008412);
+pub const KRB5_KDB_INTERNAL_ERROR: krb5_error_code         = (-1780008411);
+pub const KRB5_KDB_CONSTRAINT_VIOLATION: krb5_error_code   = (-1780008410);
+pub const KRB5_LOG_CONV: krb5_error_code                   = (-1780008409);
+pub const KRB5_LOG_UNSTABLE: krb5_error_code               = (-1780008408);
+pub const KRB5_LOG_CORRUPT: krb5_error_code                = (-1780008407);
+pub const KRB5_LOG_ERROR: krb5_error_code                  = (-1780008406);
+pub const KRB5_KDB_DBTYPE_MISMATCH: krb5_error_code        = (-1780008405);
+pub const KRB5_KDB_POLICY_REF: krb5_error_code             = (-1780008404);
+pub const KRB5_KDB_STRINGS_TOOLONG: krb5_error_code        = (-1780008403);
+
+// TODO: extern const struct.
+
+extern "C" {
+    // NOTE: also extern in header
+    pub fn initialize_kdb5_error_table();
+    // NOTE: also extern in header
+    pub fn initialize_kdb5_error_table_r(list: *mut *mut et_list);
+}
+
+pub const ERROR_TABLE_BASE_kdb5: krb5_error_code = (-1780008448);
+
+// TODO: two macros for compability with older versions
+
+// TODO: include et/com_err.h
+
+pub const KV5M_NONE: krb5_error_code                   = (-1760647424);
+pub const KV5M_PRINCIPAL: krb5_error_code              = (-1760647423);
+pub const KV5M_DATA: krb5_error_code                   = (-1760647422);
+pub const KV5M_KEYBLOCK: krb5_error_code               = (-1760647421);
+pub const KV5M_CHECKSUM: krb5_error_code               = (-1760647420);
+pub const KV5M_ENCRYPT_BLOCK: krb5_error_code          = (-1760647419);
+pub const KV5M_ENC_DATA: krb5_error_code               = (-1760647418);
+pub const KV5M_CRYPTOSYSTEM_ENTRY: krb5_error_code     = (-1760647417);
+pub const KV5M_CS_TABLE_ENTRY: krb5_error_code         = (-1760647416);
+pub const KV5M_CHECKSUM_ENTRY: krb5_error_code         = (-1760647415);
+pub const KV5M_AUTHDATA: krb5_error_code               = (-1760647414);
+pub const KV5M_TRANSITED: krb5_error_code              = (-1760647413);
+pub const KV5M_ENC_TKT_PART: krb5_error_code           = (-1760647412);
+pub const KV5M_TICKET: krb5_error_code                 = (-1760647411);
+pub const KV5M_AUTHENTICATOR: krb5_error_code          = (-1760647410);
+pub const KV5M_TKT_AUTHENT: krb5_error_code            = (-1760647409);
+pub const KV5M_CREDS: krb5_error_code                  = (-1760647408);
+pub const KV5M_LAST_REQ_ENTRY: krb5_error_code         = (-1760647407);
+pub const KV5M_PA_DATA: krb5_error_code                = (-1760647406);
+pub const KV5M_KDC_REQ: krb5_error_code                = (-1760647405);
+pub const KV5M_ENC_KDC_REP_PART: krb5_error_code       = (-1760647404);
+pub const KV5M_KDC_REP: krb5_error_code                = (-1760647403);
+pub const KV5M_ERROR: krb5_error_code                  = (-1760647402);
+pub const KV5M_AP_REQ: krb5_error_code                 = (-1760647401);
+pub const KV5M_AP_REP: krb5_error_code                 = (-1760647400);
+pub const KV5M_AP_REP_ENC_PART: krb5_error_code        = (-1760647399);
+pub const KV5M_RESPONSE: krb5_error_code               = (-1760647398);
+pub const KV5M_SAFE: krb5_error_code                   = (-1760647397);
+pub const KV5M_PRIV: krb5_error_code                   = (-1760647396);
+pub const KV5M_PRIV_ENC_PART: krb5_error_code          = (-1760647395);
+pub const KV5M_CRED: krb5_error_code                   = (-1760647394);
+pub const KV5M_CRED_INFO: krb5_error_code              = (-1760647393);
+pub const KV5M_CRED_ENC_PART: krb5_error_code          = (-1760647392);
+pub const KV5M_PWD_DATA: krb5_error_code               = (-1760647391);
+pub const KV5M_ADDRESS: krb5_error_code                = (-1760647390);
+pub const KV5M_KEYTAB_ENTRY: krb5_error_code           = (-1760647389);
+pub const KV5M_CONTEXT: krb5_error_code                = (-1760647388);
+pub const KV5M_OS_CONTEXT: krb5_error_code             = (-1760647387);
+pub const KV5M_ALT_METHOD: krb5_error_code             = (-1760647386);
+pub const KV5M_ETYPE_INFO_ENTRY: krb5_error_code       = (-1760647385);
+pub const KV5M_DB_CONTEXT: krb5_error_code             = (-1760647384);
+pub const KV5M_AUTH_CONTEXT: krb5_error_code           = (-1760647383);
+pub const KV5M_KEYTAB: krb5_error_code                 = (-1760647382);
+pub const KV5M_RCACHE: krb5_error_code                 = (-1760647381);
+pub const KV5M_CCACHE: krb5_error_code                 = (-1760647380);
+pub const KV5M_PREAUTH_OPS: krb5_error_code            = (-1760647379);
+pub const KV5M_SAM_CHALLENGE: krb5_error_code          = (-1760647378);
+pub const KV5M_SAM_CHALLENGE_2: krb5_error_code        = (-1760647377);
+pub const KV5M_SAM_KEY: krb5_error_code                = (-1760647376);
+pub const KV5M_ENC_SAM_RESPONSE_ENC: krb5_error_code   = (-1760647375);
+pub const KV5M_ENC_SAM_RESPONSE_ENC_2: krb5_error_code = (-1760647374);
+pub const KV5M_SAM_RESPONSE: krb5_error_code           = (-1760647373);
+pub const KV5M_SAM_RESPONSE_2: krb5_error_code         = (-1760647372);
+pub const KV5M_PREDICTED_SAM_RESPONSE: krb5_error_code = (-1760647371);
+pub const KV5M_PASSWD_PHRASE_ELEMENT: krb5_error_code  = (-1760647370);
+pub const KV5M_GSS_OID: krb5_error_code                = (-1760647369);
+pub const KV5M_GSS_QUEUE: krb5_error_code              = (-1760647368);
+pub const KV5M_FAST_ARMORED_REQ: krb5_error_code       = (-1760647367);
+pub const KV5M_FAST_REQ: krb5_error_code               = (-1760647366);
+pub const KV5M_FAST_RESPONSE: krb5_error_code          = (-1760647365);
+pub const KV5M_AUTHDATA_CONTEXT: krb5_error_code       = (-1760647364);
+// TODO: extern const here
+
+extern "C" {
+    // NOTE: also extern in the header
+    pub fn initialize_kv5m_error_table();
+    // NOTE: also extern in the header
+    pub fn initialize_kv5m_error_table_r(list: *mut *mut et_list);
+}
+
+pub const ERROR_TABLE_BASE_kv5m: krb5_error_code = (-1760647424);
+
+// TODO: Two macros for compability with older versions
+
+// TODO: include et/com_err.h
+
+pub const KRB524_BADKEY: krb5_error_code        = (-1750206208);
+pub const KRB524_BADADDR: krb5_error_code       = (-1750206207);
+pub const KRB524_BADPRINC: krb5_error_code      = (-1750206206);
+pub const KRB524_BADREALM: krb5_error_code      = (-1750206205);
+pub const KRB524_V4ERR: krb5_error_code         = (-1750206204);
+pub const KRB524_ENCFULL: krb5_error_code       = (-1750206203);
+pub const KRB524_DECEMPTY: krb5_error_code      = (-1750206202);
+pub const KRB524_NOTRESP: krb5_error_code       = (-1750206201);
+pub const KRB524_KRB4_DISABLED: krb5_error_code = (-1750206200);
+// TODO extern const here
+
+extern "C" {
+    // NOTE: also extern in header
+    pub fn initialize_k524_error_table();
+    // NOTE: also extern in header
+    pub fn initialize_k524_error_table_r(list: *mut *mut et_list);
+}
+
+pub const ERROR_TABLE_BASE_k524: krb5_error_code = (-1750206208);
+
+// TODO: two macros for compability with older versions
+
+// TODO: include et/com_err.h
+
+
+pub const ASN1_BAD_TIMEFORMAT: krb5_error_code  = (1859794432);
+pub const ASN1_MISSING_FIELD: krb5_error_code   = (1859794433);
+pub const ASN1_MISPLACED_FIELD: krb5_error_code = (1859794434);
+pub const ASN1_TYPE_MISMATCH: krb5_error_code   = (1859794435);
+pub const ASN1_OVERFLOW: krb5_error_code        = (1859794436);
+pub const ASN1_OVERRUN: krb5_error_code         = (1859794437);
+pub const ASN1_BAD_ID: krb5_error_code          = (1859794438);
+pub const ASN1_BAD_LENGTH: krb5_error_code      = (1859794439);
+pub const ASN1_BAD_FORMAT: krb5_error_code      = (1859794440);
+pub const ASN1_PARSE_ERROR: krb5_error_code     = (1859794441);
+pub const ASN1_BAD_GMTIME: krb5_error_code      = (1859794442);
+pub const ASN1_MISMATCH_INDEF: krb5_error_code  = (1859794443);
+pub const ASN1_MISSING_EOC: krb5_error_code     = (1859794444);
+pub const ASN1_OMITTED: krb5_error_code         = (1859794445);
+// TODO: extern const here..
+
+extern "C" {
+    // NOTE: also extern in header
+    pub fn initlialize_asn1_error_table();
+    // NOTE: also extern in header
+    pub fn initlialize_asn1_error_table_r(list: *mut *mut et_list);
+}
+
+pub const ERROR_TABLE_BASE_asn1: krb5_error_code = (1859794432);
+
+// TODO: two macros for compatibility with older versions
