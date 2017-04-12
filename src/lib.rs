@@ -119,6 +119,7 @@ pub type krb5_const_principal = *const krb5_principal_data;
 pub const KRB5_REFERRAL_REALM: &'static str = "";
 
 // krb5/krb5.h:267
+#[link(name = "krb5")]
 extern "C" {
     /// Check for a match with KRB5_REFERRAL_REALM
     ///
@@ -318,6 +319,7 @@ pub const KRB5_C_RANDSOURCE_MAX: u32 = 5;
 //       krb5_x
 //       krb5_xc
 
+#[link(name = "krb5")]
 extern "C" {
     /// Encrypt data using a key (operates on keyblock).
     ///
@@ -525,6 +527,7 @@ pub const KRB5_KEYUSAGE_ENC_CHALLENGE_CLIENT: krb5_keyusage = 54;
 pub const KRB5_KEYUSAGE_ENC_CHALLENGE_KDC: krb5_keyusage = 55;
 pub const KRB5_KEYUSAGE_AS_REQ: krb5_keyusage = 56;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_c_valid_enctype(ktype: krb5_enctype) -> krb5_boolean;
@@ -554,6 +557,7 @@ pub const KRB5_CRYPTO_TYPE_CHECKSUM: krb5_cryptotype = 6;
 /// header, data and trailer buffers
 pub const KRB5_CRYPTO_TYPE_STREAM: krb5_cryptotype = 7;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_c_make_checksum_iov(context: krb5_context,
@@ -1347,6 +1351,7 @@ pub const KRB5_TC_SUPPORTED_KTYPES: krb5_flags   = 0x00000200;
 pub const KRB5_TC_OPENCLOSE: krb5_flags = 0x00000001;
 pub const KRB5_TC_NOTICKKET: krb5_flags = 0x00000002;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_cc_get_name(context: krb5_context,
@@ -1472,6 +1477,7 @@ pub struct krb5_keytab_entry {
 pub enum _krb5_kt {}
 pub type krb5_keytab = *mut _krb5_kt;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_kt_get_type(context: krb5_context,
@@ -1514,6 +1520,7 @@ pub const KRB5_INIT_CONTEXT_SECURE: krb5_flags = 0x1;
 /// Use KDC configuration if available
 pub const KRB5_INIT_CONTEXT_KDC: krb5_flags = 0x2;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_init_context(context: *mut krb5_context) -> krb5_error_code;
@@ -1561,6 +1568,7 @@ pub const KRB5_GC_NO_TRANSIT_CHECK: krb5_flags = 32;
 /// Constrained delegation
 pub const KRB5_GC_CONSTRAINED_DELEGATION: krb5_flags = 64;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_get_credentials(context: krb5_context,
@@ -1649,6 +1657,7 @@ pub const KRB5_PRINCIPAL_PARSE_ENTERPRSIE: krb5_flags = 0x4;
 /// Ignore realm if present
 pub const KRB5_PRINCIPAL_PARSE_IGNORE_REALM: krb5_flags = 0x8;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_parse_name_flags(context: krb5_context,
@@ -1673,6 +1682,7 @@ pub const KRB5_PRINCIPAL_UNPARSE_NO_REALM: krb5_flags = 0x2;
 /// Don't escape special characters
 pub const KRB5_PRINCIPAL_UNPARSE_DISPLAY: krb5_flags = 0x4;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_unparse_name_flags(context: krb5_context,
@@ -1724,6 +1734,7 @@ pub const KRB5_PRINCIPAL_COMPARE_CASEFOLD: krb5_flags = 4;
 // TODO: Doc
 pub const KRB5_PRINCIPAL_COMPARE_UTF8: krb5_flags = 8;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_principal_compare_flags(context: krb5_context,
@@ -1825,6 +1836,7 @@ extern "C" {
 #[deprecated]
 pub enum credentials {}
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     #[allow(deprecated)]
@@ -2294,6 +2306,7 @@ extern "C" {
 
 pub const KRB5_REALM_BRANCH_CHAR: c_char = b'.' as c_char;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_read_password(context: krb5_context,
@@ -2403,6 +2416,7 @@ pub type krb5_prompter_fct = extern "C" fn(context: krb5_context,
                                            banner: *const c_char,
                                            num_prompts: c_int,
                                            prompts: *mut krb5_prompt) -> krb5_error_code;
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     // NOTE: last argument is actually `krb5_prompt prompts[]` in the orignal source,
@@ -2450,6 +2464,7 @@ pub const KRB5_RESPONDER_PKINIT_FLAGS_TOKEN_USER_PIN_LOCKED: krb5_flags = (1 << 
 pub enum krb5_responder_context_st {}
 pub type krb5_responder_context = *mut krb5_responder_context_st;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_responder_list_questions(ctx: krb5_context,
@@ -2489,6 +2504,7 @@ pub struct krb5_responder_otp_challenge {
     pub tokeninfo: *mut *mut krb5_responder_otp_challenge,
 }
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_responder_otp_get_challenge(ctx: krb5_context,
@@ -2520,6 +2536,7 @@ pub struct krb5_responder_pkinit_challenge {
     pub identities: *mut *mut krb5_responder_pkinit_identity,
 }
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_responder_pkinit_get_challenge(ctx: krb5_context,
@@ -2564,6 +2581,7 @@ pub const KRB5_GET_INIT_CREDS_OPT_CHG_PWD_PRMPT: krb5_flags = 0x0100;
 pub const KRB5_GET_INIT_CREDS_OPT_CANONICALIZE: krb5_flags  = 0x0200;
 pub const KRB5_GET_INIT_CREDS_OPT_ANONYMOUS: krb5_flags     = 0x0400;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_get_init_creds_opt_alloc(context: krb5_context,
@@ -2615,6 +2633,7 @@ pub struct krb5_gic_opt_pa_data {
     pub value: *mut c_char,
 }
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_get_init_creds_opt_set_pa(context: krb5_context,
@@ -2655,6 +2674,7 @@ type krb5_expire_callback_func = extern "C" fn(context: krb5_context,
                                                password_expiration: krb5_timestamp,
                                                account_expiration: krb5_timestamp,
                                                is_last_req: krb5_boolean);
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_get_init_creds_opt_set_expire_callback(context: krb5_context,
@@ -2684,6 +2704,7 @@ pub type krb5_init_creds_context = *mut _krb5_init_creds_context;
 // TODO: Doc
 pub const KRB5_INIT_CREDS_STEP_FLAG_CONTINUE: krb5_flags = 0x1;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_init_creds_free(context: krb5_context,
@@ -2735,6 +2756,7 @@ extern "C" {
 pub enum _krb5_tkt_creds_context {}
 pub type krb5_tkt_creds_context = *mut _krb5_tkt_creds_context;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_tkt_creds_init(context: krb5_context,
@@ -2757,6 +2779,7 @@ extern "C" {
 // TODO: Doc
 pub const KRB5_TKT_CREDS_STEP_FLAG_CONTINUE: krb5_flags = 0x1;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_tkt_creds_step(context: krb5_context,
@@ -2789,6 +2812,7 @@ pub struct krb5_verify_init_creds_opt {
 // TODO: Doc
 pub const KRB5_VERIFY_INIT_CREDS_OPT_AP_REQ_NOFAIL: krb5_flags = 0x0001;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_verify_init_creds_opt_init(k5_vic_options: *mut krb5_verify_init_creds_opt);
@@ -2844,6 +2868,7 @@ pub const KRB5_PROMPT_TYPE_PREAUTH: krb5_prompt_type = 0x4;
 
 pub type krb5_prompt_type = krb5_int32;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_get_prompt_types(context: krb5_context) -> *mut krb5_prompt_type;
@@ -2902,6 +2927,7 @@ pub const KRB5_PAC_UPN_DNS_INFO: krb5_ui_4 = 12;
 pub enum krb5_pac_data {}
 pub type krb5_pac = *mut krb5_pac_data;
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_pac_add_buffer(context: krb5_context,
@@ -2958,6 +2984,7 @@ pub struct krb5_trace_info {
 pub type krb5_trace_callback = extern "C" fn(context: krb5_context,
                                              info: *const krb5_trace_info,
                                              cb_data: *mut c_void);
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     pub fn krb5_set_trace_callback(context: krb5_context,
@@ -3234,6 +3261,7 @@ pub enum et_krb5_error_table {}
 // TODO: not defined here. search where from!
 pub enum et_list {}
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     // NOTE: also extern in header
@@ -3262,6 +3290,7 @@ pub const KRB5_KCM_NO_SERVER: krb5_error_code          = (-1750600181);
 
 // extern const here
 
+#[link(name = "krb5")]
 extern "C" {
     // TODO: Doc
     // NOTE: Also extern in header
@@ -3326,6 +3355,7 @@ pub const KRB5_KDB_STRINGS_TOOLONG: krb5_error_code        = (-1780008403);
 
 // TODO: extern const struct.
 
+#[link(name = "krb5")]
 extern "C" {
     // NOTE: also extern in header
     pub fn initialize_kdb5_error_table();
@@ -3402,6 +3432,7 @@ pub const KV5M_FAST_RESPONSE: krb5_error_code          = (-1760647365);
 pub const KV5M_AUTHDATA_CONTEXT: krb5_error_code       = (-1760647364);
 // TODO: extern const here
 
+#[link(name = "krb5")]
 extern "C" {
     // NOTE: also extern in the header
     pub fn initialize_kv5m_error_table();
@@ -3426,6 +3457,7 @@ pub const KRB524_NOTRESP: krb5_error_code       = (-1750206201);
 pub const KRB524_KRB4_DISABLED: krb5_error_code = (-1750206200);
 // TODO extern const here
 
+#[link(name = "krb5")]
 extern "C" {
     // NOTE: also extern in header
     pub fn initialize_k524_error_table();
@@ -3456,6 +3488,7 @@ pub const ASN1_MISSING_EOC: krb5_error_code     = (1859794444);
 pub const ASN1_OMITTED: krb5_error_code         = (1859794445);
 // TODO: extern const here..
 
+#[link(name = "krb5")]
 extern "C" {
     // NOTE: also extern in header
     pub fn initlialize_asn1_error_table();
