@@ -48,16 +48,16 @@ pub type krb5_magic = krb5_error_code;
 
 #[repr(C)]
 pub struct krb5_data {
-    magic: krb5_magic,
-    length: c_uint,
-    data: *mut c_char,
+    pub magic: krb5_magic,
+    pub length: c_uint,
+    pub data: *mut c_char,
 }
 
 #[repr(C)]
 pub struct krb5_octet_data {
-    magic: krb5_magic,
-    length: c_uint,
-    data: *mut krb5_octet,
+    pub magic: krb5_magic,
+    pub length: c_uint,
+    pub data: *mut krb5_octet,
 }
 
 pub const SALT_TYPE_AFS_LENGTH: c_uint = 65535;
@@ -68,12 +68,12 @@ pub type krb5_const_pointer = *const c_void;
 
 #[repr(C)]
 pub struct krb5_principal_data {
-    magic: krb5_magic,
-    realm: krb5_data,
+    pub magic: krb5_magic,
+    pub realm: krb5_data,
     /// An array of strings
-    data: *mut krb5_data,
-    length: krb5_int32,
-    type_: krb5_int32,
+    pub data: *mut krb5_data,
+    pub length: krb5_int32,
+    pub type_: krb5_int32,
 }
 
 pub type krb5_principal = *mut krb5_principal_data;
@@ -147,10 +147,10 @@ pub const KRB5_ANONYMOUS_PRINCSTR: &'static str = "ANONYMOUS";
 /// Structure for address
 #[repr(C)]
 pub struct krb5_address {
-    magic: krb5_magic,
-    addrtype: krb5_addrtype,
-    length: c_uint,
-    contents: *mut krb5_octet,
+    pub magic: krb5_magic,
+    pub addrtype: krb5_addrtype,
+    pub length: c_uint,
+    pub contents: *mut krb5_octet,
 }
 
 // krb5/krb5.h:316
@@ -181,10 +181,10 @@ pub struct _krb5_cryptosystem_entry;
 /// Exposed contents of a key
 #[repr(C)]
 pub struct krb5_keyblock {
-    magic: krb5_magic,
-    enctype: krb5_enctype,
-    length: c_uint,
-    contents: *mut krb5_octet,
+    pub magic: krb5_magic,
+    pub enctype: krb5_enctype,
+    pub length: c_uint,
+    pub contents: *mut krb5_octet,
 }
 
 pub enum krb5_key_st {}
@@ -201,26 +201,26 @@ pub type krb5_key = *mut krb5_key_st;
 #[cfg(feature = "krb5_old_crypto")]
 #[repr(C)]
 pub struct krb5_encrypt_block {
-    magic: krb5_magic,
-    crypto_entry: krb5_enctype,
+    pub magic: krb5_magic,
+    pub crypto_entry: krb5_enctype,
 
-    key: *mut krb5_keyblock,
+    pub key: *mut krb5_keyblock,
 }
 
 #[repr(C)]
 pub struct krb5_checksum {
-    magic: krb5_magic,
-    checksum_type: krb5_cksumtype,
-    length: c_uint,
-    contents: *mut krb5_octet,
+    pub magic: krb5_magic,
+    pub checksum_type: krb5_cksumtype,
+    pub length: c_uint,
+    pub contents: *mut krb5_octet,
 }
 
 #[repr(C)]
 pub struct krb5_enc_data {
-    magic: krb5_magic,
-    enctype: krb5_enctype,
-    kvno: krb5_kvno,
-    ciphertext: krb5_data,
+    pub magic: krb5_magic,
+    pub enctype: krb5_enctype,
+    pub kvno: krb5_kvno,
+    pub ciphertext: krb5_data,
 }
 
 /// Structure to describe a region of text to be encrypted or decrypted.
@@ -234,8 +234,8 @@ pub struct krb5_enc_data {
 #[repr(C)]
 pub struct krb5_crypto_iov {
     /// `KRB5_CRYPTO_TYPE` type of the iov
-    flags: krb5_cryptotype,
-    data: krb5_data,
+    pub flags: krb5_cryptotype,
+    pub data: krb5_data,
 }
 
 
@@ -1002,284 +1002,284 @@ pub const KRB5_KPASSWD_INITIAL_FLAG_NEEDED: isize = 7;
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_ticket_times {
-    authtime: krb5_timestamp,
-    starttime: krb5_timestamp,
-    endtime: krb5_timestamp,
-    renew_till: krb5_timestamp,
+    pub authtime: krb5_timestamp,
+    pub starttime: krb5_timestamp,
+    pub endtime: krb5_timestamp,
+    pub renew_till: krb5_timestamp,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_authdata {
-    magic: krb5_magic,
-    ad_type: krb5_authdatatype,
-    length: c_uint,
-    contents: *mut krb5_octet,
+    pub magic: krb5_magic,
+    pub ad_type: krb5_authdatatype,
+    pub length: c_uint,
+    pub contents: *mut krb5_octet,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_transited {
-    magic: krb5_magic,
-    tr_type: krb5_octet,
-    tr_contents: krb5_data,
+    pub magic: krb5_magic,
+    pub tr_type: krb5_octet,
+    pub tr_contents: krb5_data,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_enc_tkt_part {
-    magic: krb5_magic,
-    flags: krb5_flags,
-    session: *mut krb5_keyblock,
-    client: krb5_principal,
-    transited: krb5_transited,
-    times: krb5_ticket_times,
-    caddrs: *mut *mut krb5_address,
-    authorization_data: *mut *mut krb5_authdata,
+    pub magic: krb5_magic,
+    pub flags: krb5_flags,
+    pub session: *mut krb5_keyblock,
+    pub client: krb5_principal,
+    pub transited: krb5_transited,
+    pub times: krb5_ticket_times,
+    pub caddrs: *mut *mut krb5_address,
+    pub authorization_data: *mut *mut krb5_authdata,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_ticket {
-    magic: krb5_magic,
-    server: krb5_principal,
-    enc_part: krb5_enc_data,
-    enc_part2: *mut krb5_enc_tkt_part,
+    pub magic: krb5_magic,
+    pub server: krb5_principal,
+    pub enc_part: krb5_enc_data,
+    pub enc_part2: *mut krb5_enc_tkt_part,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_authenticator {
-    magic: krb5_magic,
-    client: krb5_principal,
-    checksum: *mut krb5_checksum,
-    cusec: krb5_int32,
-    ctime: krb5_timestamp,
-    subkey: *mut krb5_keyblock,
-    seq_number: krb5_ui_4,
-    authorization_data: *mut *mut krb5_authdata,
+    pub magic: krb5_magic,
+    pub client: krb5_principal,
+    pub checksum: *mut krb5_checksum,
+    pub cusec: krb5_int32,
+    pub ctime: krb5_timestamp,
+    pub subkey: *mut krb5_keyblock,
+    pub seq_number: krb5_ui_4,
+    pub authorization_data: *mut *mut krb5_authdata,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_tkt_authent {
-    magic: krb5_magic,
-    ticket: *mut krb5_ticket,
-    authenticator: *mut krb5_authenticator,
-    ap_options: krb5_flags,
+    pub magic: krb5_magic,
+    pub ticket: *mut krb5_ticket,
+    pub authenticator: *mut krb5_authenticator,
+    pub ap_options: krb5_flags,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_creds {
-    magic: krb5_magic,
-    client: krb5_principal,
-    server: krb5_principal,
-    keyblock: krb5_keyblock,
-    times: krb5_ticket_times,
-    is_skey: krb5_boolean,
-    ticket_flags: krb5_flags,
-    addresses: *mut *mut krb5_address,
-    ticket: krb5_data,
-    second_ticket: krb5_data,
-    authdata: *mut *mut krb5_authdata,
+    pub magic: krb5_magic,
+    pub client: krb5_principal,
+    pub server: krb5_principal,
+    pub keyblock: krb5_keyblock,
+    pub times: krb5_ticket_times,
+    pub is_skey: krb5_boolean,
+    pub ticket_flags: krb5_flags,
+    pub addresses: *mut *mut krb5_address,
+    pub ticket: krb5_data,
+    pub second_ticket: krb5_data,
+    pub authdata: *mut *mut krb5_authdata,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_last_req_entry {
-    magic: krb5_magic,
-    lr_type: krb5_int32,
-    value: krb5_timestamp,
+    pub magic: krb5_magic,
+    pub lr_type: krb5_int32,
+    pub value: krb5_timestamp,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_pa_data {
-    magic: krb5_magic,
-    pa_type: krb5_preauthtype,
-    length: c_uint,
-    contents: *mut krb5_octet,
+    pub magic: krb5_magic,
+    pub pa_type: krb5_preauthtype,
+    pub length: c_uint,
+    pub contents: *mut krb5_octet,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_typed_data {
-    magic: krb5_magic,
-    type_: krb5_int32,
-    length: c_uint,
-    data: *mut krb5_octet,
+    pub magic: krb5_magic,
+    pub type_: krb5_int32,
+    pub length: c_uint,
+    pub data: *mut krb5_octet,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_kdc_req {
-    magic: krb5_magic,
-    msg_type: krb5_msgtype,
-    padata: *mut *mut krb5_pa_data,
-    kdc_options: krb5_flags,
-    client: krb5_principal,
-    server: krb5_principal,
-    from: krb5_timestamp,
-    till: krb5_timestamp,
-    rtime: krb5_timestamp,
-    nonce: krb5_int32,
-    nktypes: c_int,
-    ktype: *mut krb5_enctype,
-    addressses: *mut *mut krb5_address,
-    authorization_data: krb5_enc_data,
-    unenc_authdata: *mut *mut krb5_authdata,
-    second_ticket: *mut *mut krb5_ticket,
+    pub magic: krb5_magic,
+    pub msg_type: krb5_msgtype,
+    pub padata: *mut *mut krb5_pa_data,
+    pub kdc_options: krb5_flags,
+    pub client: krb5_principal,
+    pub server: krb5_principal,
+    pub from: krb5_timestamp,
+    pub till: krb5_timestamp,
+    pub rtime: krb5_timestamp,
+    pub nonce: krb5_int32,
+    pub nktypes: c_int,
+    pub ktype: *mut krb5_enctype,
+    pub addressses: *mut *mut krb5_address,
+    pub authorization_data: krb5_enc_data,
+    pub unenc_authdata: *mut *mut krb5_authdata,
+    pub second_ticket: *mut *mut krb5_ticket,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_enc_kdc_rep_part {
-    magic: krb5_magic,
-    msg_type: krb5_msgtype,
-    session: *mut krb5_keyblock,
-    last_req: *mut *mut krb5_last_req_entry,
-    nonce: krb5_int32,
-    key_exp: krb5_timestamp,
-    flags: krb5_flags,
-    times: krb5_ticket_times,
-    server: krb5_principal,
-    caddrs: *mut *mut krb5_address,
-    enc_padata: *mut *mut krb5_pa_data,
+    pub magic: krb5_magic,
+    pub msg_type: krb5_msgtype,
+    pub session: *mut krb5_keyblock,
+    pub last_req: *mut *mut krb5_last_req_entry,
+    pub nonce: krb5_int32,
+    pub key_exp: krb5_timestamp,
+    pub flags: krb5_flags,
+    pub times: krb5_ticket_times,
+    pub server: krb5_principal,
+    pub caddrs: *mut *mut krb5_address,
+    pub enc_padata: *mut *mut krb5_pa_data,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_kdc_rep {
-    magic: krb5_magic,
-    msg_type: krb5_msgtype,
-    padata: *mut *mut krb5_pa_data,
-    client: krb5_principal,
-    ticket: *mut krb5_ticket,
-    enc_part: krb5_enc_data,
-    enc_part2: *mut krb5_enc_kdc_rep_part,
+    pub magic: krb5_magic,
+    pub msg_type: krb5_msgtype,
+    pub padata: *mut *mut krb5_pa_data,
+    pub client: krb5_principal,
+    pub ticket: *mut krb5_ticket,
+    pub enc_part: krb5_enc_data,
+    pub enc_part2: *mut krb5_enc_kdc_rep_part,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_error {
-    magic: krb5_magic,
-    ctime: krb5_timestamp,
-    cusec: krb5_int32,
-    susec: krb5_int32,
-    stime: krb5_timestamp,
-    error: krb5_ui_4,
-    client: krb5_principal,
-    server: krb5_principal,
-    text: krb5_data,
-    e_data: krb5_data,
+    pub magic: krb5_magic,
+    pub ctime: krb5_timestamp,
+    pub cusec: krb5_int32,
+    pub susec: krb5_int32,
+    pub stime: krb5_timestamp,
+    pub error: krb5_ui_4,
+    pub client: krb5_principal,
+    pub server: krb5_principal,
+    pub text: krb5_data,
+    pub e_data: krb5_data,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_ap_req {
-    magic: krb5_magic,
-    ap_options: krb5_flags,
-    ticket: *mut krb5_ticket,
-    authenticator: krb5_enc_data,
+    pub magic: krb5_magic,
+    pub ap_options: krb5_flags,
+    pub ticket: *mut krb5_ticket,
+    pub authenticator: krb5_enc_data,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_ap_rep {
-    magic: krb5_magic,
-    enc_part: krb5_enc_data,
+    pub magic: krb5_magic,
+    pub enc_part: krb5_enc_data,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_ap_rep_enc_part {
-    magic: krb5_magic,
-    ctime: krb5_timestamp,
-    cusec: krb5_int32,
-    subkey: *mut krb5_keyblock,
-    seq_number: krb5_ui_4,
+    pub magic: krb5_magic,
+    pub ctime: krb5_timestamp,
+    pub cusec: krb5_int32,
+    pub subkey: *mut krb5_keyblock,
+    pub seq_number: krb5_ui_4,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_response {
-    magic: krb5_magic,
-    message_type: krb5_octet,
-    response: krb5_data,
-    expected_nonce: krb5_int32,
-    request_time: krb5_timestamp,
+    pub magic: krb5_magic,
+    pub message_type: krb5_octet,
+    pub response: krb5_data,
+    pub expected_nonce: krb5_int32,
+    pub request_time: krb5_timestamp,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_cred_info {
-    magic: krb5_magic,
-    session: *mut krb5_keyblock,
-    client: krb5_principal,
-    server: krb5_principal,
-    flags: krb5_flags,
-    times: krb5_ticket_times,
-    caddrs: *mut *mut krb5_address,
+    pub magic: krb5_magic,
+    pub session: *mut krb5_keyblock,
+    pub client: krb5_principal,
+    pub server: krb5_principal,
+    pub flags: krb5_flags,
+    pub times: krb5_ticket_times,
+    pub caddrs: *mut *mut krb5_address,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_cred_enc_part {
-    magic: krb5_magic,
-    nonce: krb5_int32,
-    timestamp: krb5_timestamp,
-    usec: krb5_int32,
-    s_address: *mut krb5_address,
-    r_address: *mut krb5_address,
-    ticket_info: *mut *mut krb5_cred_info,
+    pub magic: krb5_magic,
+    pub nonce: krb5_int32,
+    pub timestamp: krb5_timestamp,
+    pub usec: krb5_int32,
+    pub s_address: *mut krb5_address,
+    pub r_address: *mut krb5_address,
+    pub ticket_info: *mut *mut krb5_cred_info,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_cred {
-    magic: krb5_magic,
-    tickets: *mut *mut krb5_ticket,
-    enc_part: krb5_enc_data,
-    enc_part2: *mut krb5_cred_enc_part,
+    pub magic: krb5_magic,
+    pub tickets: *mut *mut krb5_ticket,
+    pub enc_part: krb5_enc_data,
+    pub enc_part2: *mut krb5_cred_enc_part,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct passwd_phrase_element {
-    magic: krb5_magic,
-    passwd: *mut krb5_data,
-    phrase: *mut krb5_data,
+    pub magic: krb5_magic,
+    pub passwd: *mut krb5_data,
+    pub phrase: *mut krb5_data,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_pwd_data {
-    magic: krb5_magic,
-    sequence_count: c_int,
-    element: *mut *mut passwd_phrase_element,
+    pub magic: krb5_magic,
+    pub sequence_count: c_int,
+    pub element: *mut *mut passwd_phrase_element,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_pa_svr_referral_data {
-    principal: krb5_principal,
+    pub principal: krb5_principal,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_pa_server_referral_data {
-    referred_realm: *mut krb5_data,
-    true_principal_name: krb5_principal,
-    requested_principal_name: krb5_principal,
-    referral_valid_until: krb5_timestamp,
-    rep_cksum: krb5_checksum,
+    pub referred_realm: *mut krb5_data,
+    pub true_principal_name: krb5_principal,
+    pub requested_principal_name: krb5_principal,
+    pub referral_valid_until: krb5_timestamp,
+    pub rep_cksum: krb5_checksum,
 }
 
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_pa_pac_req {
-    include_pac: krb5_boolean,
+    pub include_pac: krb5_boolean,
 }
 
 // krb5/krb5.h:2151
@@ -1298,9 +1298,9 @@ pub const KRB5_AUTH_CONTEXT_USE_SUBKEY: krb5_flags   = 0x00000020;
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_replay_data {
-    timestamp: krb5_timestamp,
-    usec: krb5_int32,
-    seq: krb5_ui_4,
+    pub timestamp: krb5_timestamp,
+    pub usec: krb5_int32,
+    pub seq: krb5_ui_4,
 }
 
 /// Generate the local network address
@@ -1463,11 +1463,11 @@ pub type krb5_kt_cursor = krb5_pointer;
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_keytab_entry {
-    magic: krb5_magic,
-    principal: krb5_principal,
-    timestamp: krb5_timestamp,
-    vno: krb5_kvno,
-    key: krb5_keyblock
+    pub magic: krb5_magic,
+    pub principal: krb5_principal,
+    pub timestamp: krb5_timestamp,
+    pub vno: krb5_kvno,
+    pub key: krb5_keyblock
 }
 
 pub enum _krb5_kt {}
@@ -2391,9 +2391,9 @@ pub const KRB5_RECVAUTH_BADAUTHVERS: krb5_flags = 0x0002;
 // TODO: Doc
 #[repr(C)]
 pub struct krb5_prompt {
-    prompt: *mut c_char,
-    hidden: c_int,
-    reply: *mut krb5_data,
+    pub prompt: *mut c_char,
+    pub hidden: c_int,
+    pub reply: *mut krb5_data,
 }
 
 // NOTE: last argument is actually `krb5_prompt prompts[]` in the orignal source,
@@ -2474,20 +2474,20 @@ pub type krb5_responder_fn = extern "C" fn(ctx: krb5_context,
 // TODO: Doc
 #[repr(C)]
 pub struct krb5_responder_otp_tokeninfo {
-    flags: krb5_flags,
-    format: krb5_int32,
-    length: krb5_int32,
-    vendor: *mut c_char,
-    challenge: *mut c_char,
-    token_id: *mut c_char,
-    alg_id: *mut c_char,
+    pub flags: krb5_flags,
+    pub format: krb5_int32,
+    pub length: krb5_int32,
+    pub vendor: *mut c_char,
+    pub challenge: *mut c_char,
+    pub token_id: *mut c_char,
+    pub alg_id: *mut c_char,
 }
 
 // TODO: Doc
 #[repr(C)]
 pub struct krb5_responder_otp_challenge {
-    service: *mut c_char,
-    tokeninfo: *mut *mut krb5_responder_otp_challenge,
+    pub service: *mut c_char,
+    pub tokeninfo: *mut *mut krb5_responder_otp_challenge,
 }
 
 extern "C" {
@@ -2511,14 +2511,14 @@ extern "C" {
 // TODO: Doc
 #[repr(C)]
 pub struct krb5_responder_pkinit_identity {
-    identity: *mut c_char,
-    token_flags: krb5_int32,
+    pub identity: *mut c_char,
+    pub token_flags: krb5_int32,
 }
 
 // TODO: Doc
 #[repr(C)]
 pub struct krb5_responder_pkinit_challenge {
-    identities: *mut *mut krb5_responder_pkinit_identity,
+    pub identities: *mut *mut krb5_responder_pkinit_identity,
 }
 
 extern "C" {
@@ -2540,17 +2540,17 @@ extern "C" {
 // TODO: Doc
 #[repr(C)]
 pub struct krb5_get_init_creds_opt {
-    flags: krb5_flags,
-    tkt_life: krb5_deltat,
-    renew_life: krb5_deltat,
-    forwardable: c_int,
-    proxiable: c_int,
-    etype_list: *mut krb5_enctype,
-    etype_list_length: c_int,
-    address_list: *mut *mut krb5_address,
-    preauth_list: *mut krb5_preauthtype,
-    preauth_list_length: c_int,
-    salt: *mut krb5_data,
+    pub flags: krb5_flags,
+    pub tkt_life: krb5_deltat,
+    pub renew_life: krb5_deltat,
+    pub forwardable: c_int,
+    pub proxiable: c_int,
+    pub etype_list: *mut krb5_enctype,
+    pub etype_list_length: c_int,
+    pub address_list: *mut *mut krb5_address,
+    pub preauth_list: *mut krb5_preauthtype,
+    pub preauth_list_length: c_int,
+    pub salt: *mut krb5_data,
 }
 
 pub const KRB5_GET_INIT_CREDS_OPT_TKT_LIFE: krb5_flags      = 0x0001;
@@ -2612,8 +2612,8 @@ extern "C" {
 // TODO: Doc
 #[repr(C)]
 pub struct krb5_gic_opt_pa_data {
-    attr: *mut c_char,
-    value: *mut c_char,
+    pub attr: *mut c_char,
+    pub value: *mut c_char,
 }
 
 extern "C" {
@@ -2783,8 +2783,8 @@ extern "C" {
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_verify_init_creds_opt {
-    flags: krb5_flags,
-    ap_req_nofail: c_int,
+    pub flags: krb5_flags,
+    pub ap_req_nofail: c_int,
 }
 
 // TODO: Doc
@@ -2953,7 +2953,7 @@ extern "C" {
 // TODO: Docs
 #[repr(C)]
 pub struct krb5_trace_info {
-    message: *const c_char,
+    pub message: *const c_char,
 }
 
 pub type krb5_trace_callback = extern "C" fn(context: krb5_context,
