@@ -175,8 +175,7 @@ pub type krb5_context = *mut _krb5_context;
 pub enum _krb5_auth_context {}
 pub type krb5_auth_context = *mut _krb5_auth_context;
 
-#[repr(C)]
-pub struct _krb5_cryptosystem_entry;
+pub enum _krb5_cryptosystem_entry {}
 
 /// Exposed contents of a key
 #[repr(C)]
