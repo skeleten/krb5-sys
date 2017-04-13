@@ -1,5 +1,7 @@
 #![allow(non_camel_case_types, non_upper_case_globals, overflowing_literals)]
 
+pub mod plugin;
+
 use std::os::raw::*;
 
 // krb5/krb5.h:136
