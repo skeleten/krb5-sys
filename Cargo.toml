@@ -5,6 +5,7 @@ authors = ["skeleten <skele@ymail.com>"]
 
 repository = "https://github.com/skeleten/krb5-sys"
 description = "Bindings to the krb5 library, incomplete state"
+documentation = "https://docs.rs/krb5-sys"
 license = "MIT"
 
 [features]
