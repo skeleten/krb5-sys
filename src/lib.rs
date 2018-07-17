@@ -2697,7 +2697,7 @@ extern "C" {
                                         data: *mut c_void,
                                         start_time: krb5_deltat,
                                         in_tkt_service: *const c_char,
-                                        k5_gic_options: krb5_get_init_creds_opt) -> krb5_error_code;
+                                        k5_gic_options: *const krb5_get_init_creds_opt) -> krb5_error_code;
 }
 
 pub enum _krb5_init_creds_context {}
@@ -2801,7 +2801,7 @@ extern "C" {
                                       arg_keytab: krb5_keytab,
                                       start_time: krb5_deltat,
                                       in_tkt_service: *const c_char,
-                                      k5_gic_options: krb5_get_init_creds_opt) -> krb5_error_code;
+                                      k5_gic_options: *const krb5_get_init_creds_opt) -> krb5_error_code;
 }
 
 // TODO: Docs
