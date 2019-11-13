@@ -2686,7 +2686,7 @@ extern "C" {
     // TODO: Doc
     pub fn krb5_get_init_creds_opt_set_responder(context: krb5_context,
                                                  opt: *mut krb5_get_init_creds_opt,
-                                                 responder: krb5_responder_fn,
+                                                 responder: Option<krb5_responder_fn>,
                                                  data: *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_get_init_creds_password(context: krb5_context,
