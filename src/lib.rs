@@ -2197,12 +2197,12 @@ extern "C" {
     // TODO: Doc
     pub fn krb5_auth_con_set_checksum_func(context: krb5_context,
                                            auth_context: krb5_auth_context,
-                                           func: krb5_mk_req_checksum_func,
+                                           func: Option<krb5_mk_req_checksum_func>,
                                            data: *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_auth_con_get_checksum_func(context: krb5_context,
                                            auth_context: krb5_auth_context,
-                                           func: *mut krb5_mk_req_checksum_func,
+                                           func: *mut Option<krb5_mk_req_checksum_func>,
                                            data: *mut *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_auth_con_setaddrs(context: krb5_context,
