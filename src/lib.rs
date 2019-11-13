@@ -2693,7 +2693,7 @@ extern "C" {
                                         creds: *mut krb5_creds,
                                         client: krb5_principal,
                                         password: *const c_char,
-                                        prompter: krb5_prompter_fct,
+                                        prompter: Option<krb5_prompter_fct>,
                                         data: *mut c_void,
                                         start_time: krb5_deltat,
                                         in_tkt_service: *const c_char,
@@ -2725,7 +2725,7 @@ extern "C" {
     // TODO: Doc
     pub fn krb5_init_creds_init(context: krb5_context,
                                 client: krb5_principal,
-                                prompter: krb5_prompter_fct,
+                                prompter: Option<krb5_prompter_fct>,
                                 data: *mut c_void,
                                 start_time: krb5_deltat,
                                 options: *mut krb5_get_init_creds_opt,
