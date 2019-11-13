@@ -2990,7 +2990,7 @@ pub type krb5_trace_callback = extern "C" fn(context: krb5_context,
 extern "C" {
     // TODO: Doc
     pub fn krb5_set_trace_callback(context: krb5_context,
-                                   fn_: krb5_trace_callback,
+                                   fn_: Option<krb5_trace_callback>,
                                    cb_data: *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_set_trace_filename(context: krb5_context,
