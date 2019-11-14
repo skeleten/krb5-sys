@@ -2197,12 +2197,12 @@ extern "C" {
     // TODO: Doc
     pub fn krb5_auth_con_set_checksum_func(context: krb5_context,
                                            auth_context: krb5_auth_context,
-                                           func: krb5_mk_req_checksum_func,
+                                           func: Option<krb5_mk_req_checksum_func>,
                                            data: *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_auth_con_get_checksum_func(context: krb5_context,
                                            auth_context: krb5_auth_context,
-                                           func: *mut krb5_mk_req_checksum_func,
+                                           func: *mut Option<krb5_mk_req_checksum_func>,
                                            data: *mut *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_auth_con_setaddrs(context: krb5_context,
@@ -2686,14 +2686,14 @@ extern "C" {
     // TODO: Doc
     pub fn krb5_get_init_creds_opt_set_responder(context: krb5_context,
                                                  opt: *mut krb5_get_init_creds_opt,
-                                                 responder: krb5_responder_fn,
+                                                 responder: Option<krb5_responder_fn>,
                                                  data: *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_get_init_creds_password(context: krb5_context,
                                         creds: *mut krb5_creds,
                                         client: krb5_principal,
                                         password: *const c_char,
-                                        prompter: krb5_prompter_fct,
+                                        prompter: Option<krb5_prompter_fct>,
                                         data: *mut c_void,
                                         start_time: krb5_deltat,
                                         in_tkt_service: *const c_char,
@@ -2725,7 +2725,7 @@ extern "C" {
     // TODO: Doc
     pub fn krb5_init_creds_init(context: krb5_context,
                                 client: krb5_principal,
-                                prompter: krb5_prompter_fct,
+                                prompter: Option<krb5_prompter_fct>,
                                 data: *mut c_void,
                                 start_time: krb5_deltat,
                                 options: *mut krb5_get_init_creds_opt,
@@ -2990,7 +2990,7 @@ pub type krb5_trace_callback = extern "C" fn(context: krb5_context,
 extern "C" {
     // TODO: Doc
     pub fn krb5_set_trace_callback(context: krb5_context,
-                                   fn_: krb5_trace_callback,
+                                   fn_: Option<krb5_trace_callback>,
                                    cb_data: *mut c_void) -> krb5_error_code;
     // TODO: Doc
     pub fn krb5_set_trace_filename(context: krb5_context,
@@ -3501,3 +3501,130 @@ extern "C" {
 pub const ERROR_TABLE_BASE_asn1: krb5_error_code = (1859794432);
 
 // TODO: two macros for compatibility with older versions
+#[cfg(test)]
+mod test_nullable_callbacks {
+    use std::ptr;
+    use std::os::raw::*;
+    use crate as k5;
+
+    #[test]
+    fn test_checksum_fn_set_get_null() {
+        let mut ctx : k5::krb5_context = ptr::null_mut();
+        let mut actx: k5::krb5_auth_context = ptr::null_mut();
+
+        assert_eq!(0, unsafe {
+            k5::krb5_init_context(&mut ctx)
+        });
+
+        assert_eq!(0, unsafe {
+            k5::krb5_auth_con_init(ctx, &mut actx)
+        });
+
+        /* Erase callback. */
+        assert_eq!(0, unsafe {
+            k5::krb5_auth_con_set_checksum_func
+                (ctx, actx, None, ptr::null_mut())
+        });
+
+        let mut dst_func: Option<k5::krb5_mk_req_checksum_func> = None;
+        let mut dst_data: *mut c_void = ptr::null_mut();
+
+        /* Retrieve callback; result should be None. */
+        assert_eq!(0, unsafe {
+            k5::krb5_auth_con_get_checksum_func
+                (ctx, actx, &mut dst_func, &mut dst_data)
+        });
+
+        assert_eq!(dst_func, None);
+        assert_eq!(dst_data, ptr::null_mut());
+
+        assert_eq!(0, unsafe { k5::krb5_auth_con_free(ctx, actx) });
+
+        unsafe { k5::krb5_free_context(ctx) };
+    }
+
+    #[test]
+    fn test_responder_fn_set_null() {
+        let mut ctx : k5::krb5_context = ptr::null_mut();
+
+        assert_eq!(0, unsafe {
+            k5::krb5_init_context(&mut ctx)
+        });
+
+        let mut opts: *mut k5::krb5_get_init_creds_opt = ptr::null_mut();
+
+        assert_eq!(0, unsafe {
+            k5::krb5_get_init_creds_opt_alloc(ctx, &mut opts)
+        });
+
+        /* Erase callback. */
+        assert_eq!(0, unsafe {
+            k5::krb5_get_init_creds_opt_set_responder
+                (ctx, opts, None, ptr::null_mut())
+        });
+
+        unsafe { k5::krb5_get_init_creds_opt_free(ctx, opts) };
+
+        unsafe { k5::krb5_free_context(ctx) };
+    }
+
+    /* Test ignored by default as it will normally cause a contacting a
+       non-existent KDC or another error. */
+    #[ignore]
+    #[test]
+    fn test_prompter_fn_set_null() {
+        let mut ctx : k5::krb5_context = ptr::null_mut();
+
+        assert_eq!(0, unsafe {
+            k5::krb5_init_context(&mut ctx)
+        });
+
+        let mut creds: k5::krb5_creds = unsafe {
+            std::mem::MaybeUninit::zeroed().assume_init()
+        };
+
+        let name: &'static [u8] = b"test\0";
+        let mut princ: k5::krb5_principal = ptr::null_mut();
+
+        assert_eq!(0, unsafe {
+            k5::krb5_parse_name(ctx, name.as_ptr() as *const c_char, &mut princ)
+        });
+
+        /* Call without password and with a null callback; this operation
+           is expected to fail. The test is considered successful if below
+           call does not segfault on account of a null pointer dereference. */
+        assert_ne!(0, unsafe {
+            k5::krb5_get_init_creds_password
+                (ctx,
+                 &mut creds,
+                 princ,
+                 ptr::null(),       /* don't set password -> use prompter */
+                 None,              /* unset prompter callback */
+                 ptr::null_mut(),
+                 0,
+                 ptr::null(),
+                 ptr::null())
+        });
+
+        unsafe { k5::krb5_free_principal(ctx, princ) };
+        unsafe { k5::krb5_free_context(ctx) };
+    }
+
+    #[test]
+    fn test_trace_fn_set_null() {
+        let mut ctx : k5::krb5_context = ptr::null_mut();
+
+        assert_eq!(0, unsafe {
+            k5::krb5_init_context(&mut ctx)
+        });
+
+        /* Erase callback. */
+        assert_eq!(0, unsafe {
+            k5::krb5_set_trace_callback
+                (ctx, None, ptr::null_mut())
+        });
+
+        unsafe { k5::krb5_free_context(ctx) };
+    }
+}
+
