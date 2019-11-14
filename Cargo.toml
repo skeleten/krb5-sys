@@ -1,6 +1,6 @@
 [package]
 name = "krb5-sys"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["skeleten <skele@ymail.com>"]
 
 repository = "https://github.com/skeleten/krb5-sys"
